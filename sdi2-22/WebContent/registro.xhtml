@@ -9,44 +9,54 @@
 
 	<ui:define name="titulo">#{msgs.tituloRegistro}</ui:define>
 	<ui:define name="cuerpo">
-		<h:form>
-
-
+		<h:form id="registroForm">
 			<p:panelGrid id="registro" columns="1" cellpadding="5">
 				<h:panelGroup>
-					<p:inputText id="userId" value="#{controller.user.login}">#{msgs.userid}</p:inputText>
+					<p:inputText id="userId" value="#{controller.user.login}" required="true"
+						requiredMessage="#{msgs.requiredLoginUsuario}">#{msgs.userid}</p:inputText>
+						<h:message for="userId" />
 					<p:separator />
 				</h:panelGroup>
 
 				<h:panelGroup>
 					<h:outputLabel for="pwd1" value="#{msgs.password}" />
 					<p:password id="pwd1" value="#{controller.user.password}"
-						match="pwd2" label="Password 1" required="true" />
+						match="pwd2" label="Password 1" required="true" requiredMessage="#{msgs.requiredPassword1}" />
+						<h:message for="pwd1" />
 
 					<h:outputLabel for="pwd2" value="#{msgs.password}" />
 					<p:password id="pwd2" value="#{controller.user.password}"
-						label="Password 2" required="true" />
+						label="Password 2" required="true" requiredMessage="#{msgs.requiredPassword2}" />
+						<h:message for="pwd2" />
 				</h:panelGroup>
 
 				<h:panelGroup>
-					<p:inputText id="nombre" value="#{controller.user.name}">#{msgs.nombre}</p:inputText>
+					<p:inputText id="nombre" value="#{controller.user.name}" required="true"
+						requiredMessage="#{msgs.requiredNombreUsuario}">#{msgs.nombre}</p:inputText>
+					<h:message for="nombre" />
 					<p:separator />
 				</h:panelGroup>
 				<h:panelGroup>
-					<p:inputText id="apellidos" value="#{controller.user.surname}">#{msgs.apellidos}</p:inputText>
+					<p:inputText id="apellidos" value="#{controller.user.surname}" required="true"
+						requiredMessage="#{msgs.requiredApellidosUsuario}">#{msgs.apellidos}</p:inputText>
+					<h:message for="apellidos" />
 					<p:separator />
 				</h:panelGroup>
 				<h:panelGroup>
-					<p:inputText id="correo" value="#{controller.user.email}">#{msgs.correo}</p:inputText>
+					<p:inputText id="correo" value="#{controller.user.email}" required="true"
+						requiredMessage="#{msgs.requiredEmailUsuario}">#{msgs.correo}</p:inputText>
+					<h:message for="correo" />
 					<p:separator />
 				</h:panelGroup>
 				<h:panelGroup>
-					<p:commandButton value="#{msgs.botonSalvar}"
+					<p:commandButton id="pr" value="#{msgs.botonSalvar}"
 						action="#{controller.registro}" update="@all" process="@form" />
 					<p:commandButton value="#{msgs.botonVolver}"
 						onclick="window.history.back();" immediate="true" />
 				</h:panelGroup>
+				<h:messages for="registroForm"></h:messages>
 			</p:panelGrid>
+			
 		</h:form>
 	</ui:define>
 	<ui:define name="pie">

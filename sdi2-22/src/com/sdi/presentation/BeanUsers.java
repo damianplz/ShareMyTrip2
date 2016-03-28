@@ -14,6 +14,7 @@ import javax.xml.bind.ValidationException;
 
 import com.sdi.business.UserService;
 import com.sdi.infrastructure.Factories;
+import com.sdi.model.Application;
 import com.sdi.model.User;
 import com.sdi.persistence.exception.AlreadyPersistedException;
 import com.sdi.persistence.exception.NotPersistedException;
@@ -67,6 +68,7 @@ public class BeanUsers implements Serializable {
 			user.verify();
 		} catch (AlreadyPersistedException e) {
 			resultado = "error";
+			FacesContext.getCurrentInstance().addMessage("registroForm",new FacesMessage(e.getMessage()));	
 		}
 		return resultado;
 	}
@@ -79,12 +81,12 @@ public class BeanUsers implements Serializable {
 		this.perfil = perfil;
 	}
 	
-	public String cargar(Long userId) throws ValidationException{
+	public String cargar(Application app) throws ValidationException{
 		String resultado="exito";
 		UserService us;
 		try {
 			us = Factories.services.createUsersService();
-			setPerfil(us.finById(userId));
+			setPerfil(us.finById(app.getUserId()));
 		} catch (NotPersistedException e) {
 			resultado="fracaso";
 			throw new ValidatorException(new FacesMessage(e.getMessage()));

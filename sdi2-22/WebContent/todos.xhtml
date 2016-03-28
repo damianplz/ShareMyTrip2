@@ -9,7 +9,7 @@
 
 	<ui:define name="titulo">#{msgs.tituloPerfil}</ui:define>
 	<ui:define name="cuerpo">
-		<h:form>
+		<h:form id="formTodos">
 			<p:dataTable id="tablaViajes" var="viaje" value="#{viajes.viajes}"
 				border="1">
 				<p:column>
@@ -39,6 +39,7 @@
 					<p:messages for="botonVer" />
 				</p:column>
 			</p:dataTable>
+			<h:messages/>
 		</h:form>
 	</ui:define>
 	<ui:define name="pie">

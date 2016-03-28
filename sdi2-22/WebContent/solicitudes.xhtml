@@ -17,7 +17,7 @@
 				<p:column>
 				<f:facet name="header">#{msgs.verPerfil}</f:facet>
 					<p:commandButton id="botonPerfil" value="#{msgs.botonVerPerfil}"
-						onclick="user.cargarPerfil(app.userId)" />
+						action="#{controller.cargar(app)}"/>
 					<p:messages for="botonConfirmarSolicitar" />
 				</p:column>
 				<p:column>

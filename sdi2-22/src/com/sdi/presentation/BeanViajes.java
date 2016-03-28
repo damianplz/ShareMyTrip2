@@ -2,6 +2,7 @@ package com.sdi.presentation;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -45,13 +46,23 @@ public class BeanViajes {
 
 	public String listado() {
 		String resultado = "exito";
+		List<Trip> viajesValidos;
 		try {
 			User u = (User) FacesContext.getCurrentInstance()
 					.getExternalContext().getSessionMap().get("LOGGEDIN_USER");
 			viajes = Factories.services.createTripsService().getTrips();
-			for (Trip t : viajes)
-				if (t.getPromoterId().equals(u.getId()))
-					t.setPropio(true);
+			viajesValidos = new ArrayList<Trip>();
+			if (u != null) {
+				for (Trip t : viajes)
+					if (t.getPromoterId().equals(u.getId()))
+						t.setPropio(true);
+			}
+			for (Trip tr : viajes)
+				if (tr.getClosingDate().after(Calendar.getInstance().getTime()))
+					if (tr.getAvailablePax() > 0)
+						viajesValidos.add(tr);
+
+			viajes = viajesValidos;
 		} catch (NotPersistedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,18 +81,18 @@ public class BeanViajes {
 					.getExternalContext().getSessionMap().get("LOGGEDIN_USER");
 			// Como promotor
 			for (Trip t : viajes)
-				if (t.getPromoterId().equals(u.getId())){
+				if (t.getPromoterId().equals(u.getId())) {
 					aux.add(t);
 					t.setPropio(true);
 				}
 			// Como solicitante
 			for (Trip t : viajes)
-				if(Factories.services.createApplicationsService().findById(u.getId(),t.getId())!=null)
+				if (Factories.services.createApplicationsService().findById(
+						u.getId(), t.getId()) != null)
 					aux.add(t);
 		} catch (NotPersistedException e) {
-			System.out
-					.println("El usuario no es solicitante de ningún viaje");
-		}finally{
+			System.out.println("El usuario no es solicitante de ningún viaje");
+		} finally {
 			setViajes(aux);
 		}
 		return resultado;

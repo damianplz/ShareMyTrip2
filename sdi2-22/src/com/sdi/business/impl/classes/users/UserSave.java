@@ -5,19 +5,15 @@ import com.sdi.model.User;
 import com.sdi.model.UserStatus;
 import com.sdi.persistence.UserDao;
 import com.sdi.persistence.exception.AlreadyPersistedException;
-import com.sdi.persistence.exception.PersistenceException;
 
 public class UserSave {
 
 	public void save(User user) throws AlreadyPersistedException {
 		UserDao dao = Factories.persistence.newUserDao();
-		try{
-			user.setStatus(UserStatus.ACTIVE);
-			dao.save(user);
-		}catch(PersistenceException e){
-			throw new AlreadyPersistedException("El usuario ya existe", e);
-		}
-		
+		user.setStatus(UserStatus.ACTIVE);
+		User a = dao.findByLogin(user.getLogin());
+		if (a != null)
+			throw new AlreadyPersistedException("El login ya existe");
+		dao.save(user);
 	}
-
 }

@@ -11,8 +11,6 @@ public class SeatFind {
 	public Seat findById(Long userId, Long tripId) throws NotPersistedException {
 		SeatDao dao = Factories.persistence.newSeatDao();
 		Seat plaza = dao.findByUserAndTrip(userId, tripId);
-		if(plaza==null)
-			throw new NotPersistedException("No se ha encontrado la plaza");
 		return plaza;
 	}
 

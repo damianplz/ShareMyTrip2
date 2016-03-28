@@ -95,7 +95,7 @@
 	<navigation-rule>
 		<from-view-id>/solicitudes.xhtml</from-view-id>
 		<navigation-case>
-			<from-action>#{users.cargar(userId)}</from-action>
+			<from-action>#{controller.cargar(app)}</from-action>
 			<from-outcome>exito</from-outcome>
 			<to-view-id>/usuario.xhtml</to-view-id>
 		</navigation-case>

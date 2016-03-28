@@ -16,18 +16,36 @@
 					<h:message for="calleS" />
 					<p:separator />
 				</h:panelGroup>
+
+				<p:multiSelectListbox id="provinciaS" value="#{provincia.comunidades}"
+					effect="slide" header="Categories" showHeaders="true">
+					<f:selectItems value="#{provincia.provincias}" />
+				</p:multiSelectListbox>
+
+
+
+				<!-- 
 				<h:panelGroup>
-					<p:inputText id="ciudadS" value="#{viaje.cityD}" required="true"
-						requiredMessage="#{msgs.requiredCiudadSalida}">#{msgs.formCrearViajeCiudadSalida}</p:inputText>
-					<h:message for="ciudadS" />
-					<p:separator />
-				</h:panelGroup>
-				<h:panelGroup>
-					<p:inputText id="provinciaS" value="#{viaje.stateD}"
+					<p:selectOneMenu id="provinciaS" value="#{viaje.stateD}">
+						<f:selectItem itemLabel="#{msgs.formCrearViajeProvinciaSalida}"
+							itemValue="" />
+						<f:selectItems value="#{provincias.comunidades}" />
+					</p:selectOneMenu>
+					<!-- <p:inputText id="provinciaS" value="#{viaje.stateD}"
 						required="true" requiredMessage="#{msgs.requiredProvinciaSalida}">#{msgs.formCrearViajeProvinciaSalida}</p:inputText>
 					<h:message for="provinciaS" />
 					<p:separator />
 				</h:panelGroup>
+				<h:panelGroup>
+					<p:selectOneMenu id="ciudadS" value="#{viaje.cityD}">
+						<f:selectItem itemLabel="#{msgs.formCrearViajeCiudadSalida}"
+							itemValue="" />
+						<f:selectItems itemValue="" value="#{provincias.provincias}" />
+					</p:selectOneMenu>
+					<p:separator />
+				</h:panelGroup>
+				 -->
+
 				<h:panelGroup>
 					<p:inputText id="paisS" value="#{viaje.countryD}" required="true"
 						requiredMessage="#{msgs.requiredPaisSalida}">#{msgs.formCrearViajePaisSalida}</p:inputText>
@@ -40,7 +58,7 @@
 						converterMessage="#{msgs.converterCp}"
 						validatorMessage="#{msgs.converterCp}">#{msgs.formCrearViajeCodigoPostalSalida}		
 					<f:convertNumber type="number" />
-					<f:validateLength minimun="5" maximum="5"/>
+						<f:validateLength minimun="5" maximum="5" />
 					</p:inputText>
 					<h:message for="cpS" />
 					<p:separator />
@@ -86,7 +104,7 @@
 						converterMessage="#{msgs.converterCp}"
 						validatorMessage="#{msgs.converterCp}">#{msgs.formCrearViajeCodigoPostalLlegada}
 					<f:convertNumber type="number" />
-					<f:validateLength minimun="5" maximum="5"/>
+						<f:validateLength minimun="5" maximum="5" />
 					</p:inputText>
 					<h:message for="cpL" />
 					<p:separator />
