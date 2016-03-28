@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<p:menubar id="mimenu">
+		<p:submenu id="misubmenu1" label="#{msgs.tituloOpciones}"
+			icon="ui-icon-document">
+			<p:menuitem id="linkCrearUsuario" value="#{msgs.enlaceCrearUsuario}"
+				outcome="registro"  rendered="#{!login.validado}"/>
+			<p:separator />
+			<p:menuitem id="linkVerViajes" value="#{msgs.enlaceVerViajes}"
+				action="#{viajes.listado}" />
+			<p:separator />
+			<p:menuitem id="linkCerrarSesion" value="#{msgs.enlaceCerrarSesion}"
+				action="#{login.delete}" rendered="#{login.validado}" />
+		</p:submenu>
+		<p:submenu style="float:right" label="#{msgs.textoIdioma}"
+			icon="ui-icon-document">
+			<p:menuitem id="linkespa" value="#{msgs.enlaceIdiomaES}"
+				actionListener="#{settings.setSpanish}" update="@all" />
+			<p:menuitem id="linkingles" value="#{msgs.enlaceIdiomaEN}"
+				actionListener="#{settings.setEnglish}" update="@all" />
+		</p:submenu>
+	</p:menubar>
+</ui:composition>

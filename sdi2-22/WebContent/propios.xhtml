@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/template-general.xhtml">
+	<ui:define name="titulo">#{msgs.tituloPerfil}</ui:define>
+	<ui:define name="cuerpo">
+		<h:form>
+			<p:dataTable id="tablaMisViajes" var="viaje" value="#{viajes.viajes}"
+				border="1">
+				<p:column>
+					<f:facet name="header">#{msgs.viajesOrigen}</f:facet>#{viaje.departure.city}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.viajesDestino}</f:facet>#{viaje.destination.city}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.viajesSalida}</f:facet>#{viaje.departureDate}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.viajesLlegada}</f:facet>#{viaje.arrivalDate}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.viajesLibres}</f:facet>#{viaje.availablePax}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.viajesCierre}</f:facet>#{viaje.closingDate}</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.viajesVerSolicitudes}</f:facet>
+					<p:commandButton id="botonVerSolicitudes"
+						value="#{msgs.botonVerSolicitudes}"
+						onclick="solicitudes.cargar(viaje)" />
+					<p:messages for="botonConfirmarSolicitar" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+	<ui:define name="pie">
+		<ui:include src="/snippets/pie-casa.xhtml" />
+	</ui:define>
+
+</ui:composition>

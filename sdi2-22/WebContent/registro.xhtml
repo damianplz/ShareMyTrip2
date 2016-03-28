@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/template-general.xhtml">
+
+	<ui:define name="titulo">#{msgs.tituloRegistro}</ui:define>
+	<ui:define name="cuerpo">
+		<h:form>
+
+
+			<p:panelGrid id="registro" columns="1" cellpadding="5">
+				<h:panelGroup>
+					<p:inputText id="userId" value="#{controller.user.login}">#{msgs.userid}</p:inputText>
+					<p:separator />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<h:outputLabel for="pwd1" value="#{msgs.password}" />
+					<p:password id="pwd1" value="#{controller.user.password}"
+						match="pwd2" label="Password 1" required="true" />
+
+					<h:outputLabel for="pwd2" value="#{msgs.password}" />
+					<p:password id="pwd2" value="#{controller.user.password}"
+						label="Password 2" required="true" />
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<p:inputText id="nombre" value="#{controller.user.name}">#{msgs.nombre}</p:inputText>
+					<p:separator />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:inputText id="apellidos" value="#{controller.user.surname}">#{msgs.apellidos}</p:inputText>
+					<p:separator />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:inputText id="correo" value="#{controller.user.email}">#{msgs.correo}</p:inputText>
+					<p:separator />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:commandButton value="#{msgs.botonSalvar}"
+						action="#{controller.registro}" update="@all" process="@form" />
+					<p:commandButton value="#{msgs.botonVolver}"
+						onclick="window.history.back();" immediate="true" />
+				</h:panelGroup>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+	<ui:define name="pie">
+		<ui:include src="/snippets/pie-casa.xhtml" />
+	</ui:define>
+</ui:composition>
