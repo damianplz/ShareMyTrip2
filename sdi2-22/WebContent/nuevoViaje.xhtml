@@ -17,34 +17,30 @@
 					<p:separator />
 				</h:panelGroup>
 
-				<p:multiSelectListbox id="provinciaS" value="#{provincia.comunidades}"
-					effect="slide" header="Categories" showHeaders="true">
-					<f:selectItems value="#{provincia.provincias}" />
-				</p:multiSelectListbox>
+				<h:panelGrid>
+					<p:selectOneListbox id="listaCiudadesD" value="#{viaje.cityD}"
+						var="t" filter="true" filterMatchMode="contains">
+						<f:selectItems value="#{viaje.provincias}" var="p"
+							itemLabel="#{p.displayName}" itemValue="#{p}">
+						</f:selectItems>
 
+						<p:column>
+							<h:outputText value="#{t.displayName}" />
+						</p:column>
+					</p:selectOneListbox>
+				</h:panelGrid>
+				<h:panelGrid>
+					<p:selectOneListbox id="listaComunidadesD" value="#{viaje.stateD}"
+						var="r" filter="true" filterMatchMode="contains">
+						<f:selectItems value="#{viaje.comunidades}" var="s"
+							itemLabel="#{s.displayName}" itemValue="#{s}">
+						</f:selectItems>
 
-
-				<!-- 
-				<h:panelGroup>
-					<p:selectOneMenu id="provinciaS" value="#{viaje.stateD}">
-						<f:selectItem itemLabel="#{msgs.formCrearViajeProvinciaSalida}"
-							itemValue="" />
-						<f:selectItems value="#{provincias.comunidades}" />
-					</p:selectOneMenu>
-					<!-- <p:inputText id="provinciaS" value="#{viaje.stateD}"
-						required="true" requiredMessage="#{msgs.requiredProvinciaSalida}">#{msgs.formCrearViajeProvinciaSalida}</p:inputText>
-					<h:message for="provinciaS" />
-					<p:separator />
-				</h:panelGroup>
-				<h:panelGroup>
-					<p:selectOneMenu id="ciudadS" value="#{viaje.cityD}">
-						<f:selectItem itemLabel="#{msgs.formCrearViajeCiudadSalida}"
-							itemValue="" />
-						<f:selectItems itemValue="" value="#{provincias.provincias}" />
-					</p:selectOneMenu>
-					<p:separator />
-				</h:panelGroup>
-				 -->
+						<p:column>
+							<h:outputText value="#{r.displayName}" />
+						</p:column>
+					</p:selectOneListbox>
+				</h:panelGrid>
 
 				<h:panelGroup>
 					<p:inputText id="paisS" value="#{viaje.countryD}" required="true"
@@ -58,7 +54,7 @@
 						converterMessage="#{msgs.converterCp}"
 						validatorMessage="#{msgs.converterCp}">#{msgs.formCrearViajeCodigoPostalSalida}		
 					<f:convertNumber type="number" />
-						<f:validateLength minimun="5" maximum="5" />
+						<f:validateLength minimum="5" maximum="5" />
 					</p:inputText>
 					<h:message for="cpS" />
 					<p:separator />
@@ -80,18 +76,34 @@
 					<h:message for="calleL" />
 					<p:separator />
 				</h:panelGroup>
-				<h:panelGroup>
-					<p:inputText id="ciudadL" value="#{viaje.cityA}" required="true"
-						requiredMessage="#{msgs.requiredCiudadLlegada}">#{msgs.formCrearViajeCiudadLlegada}</p:inputText>
-					<h:message for="ciudadL" />
-					<p:separator />
-				</h:panelGroup>
-				<h:panelGroup>
-					<p:inputText id="provinciaL" value="#{viaje.stateA}"
-						required="true" requiredMessage="#{msgs.requiredProvinciaLlegada}">#{msgs.formCrearViajeProvinciaLlegada}</p:inputText>
-					<h:message for="provinciaL" />
-					<p:separator />
-				</h:panelGroup>
+				<h:panelGrid>
+					<p:selectOneListbox id="listaCiudadesS" value="#{viaje.cityA}"
+						var="t" filter="true" filterMatchMode="contains">
+						<f:selectItems value="#{viaje.provincias}" var="p"
+							itemLabel="#{p.displayName}" itemValue="#{p}">
+						</f:selectItems>
+
+
+						<p:column>
+							<h:outputText value="#{t.displayName}" />
+						</p:column>
+
+					</p:selectOneListbox>
+				</h:panelGrid>
+				<h:panelGrid>
+					<p:selectOneListbox id="listaComunidadesA" value="#{viaje.stateA}"
+						var="r" filter="true" filterMatchMode="contains">
+						<f:selectItems value="#{viaje.comunidades}" var="s"
+							itemLabel="#{s.displayName}" itemValue="#{s}">
+						</f:selectItems>
+
+						<p:column>
+							<h:outputText value="#{r.displayName}" />
+						</p:column>
+					</p:selectOneListbox>
+				</h:panelGrid>
+
+
 				<h:panelGroup>
 					<p:inputText id="paisL" value="#{viaje.countryA}" required="true"
 						requiredMessage="#{msgs.requiredPaisLlegada}">#{msgs.formCrearViajePaisLlegada}</p:inputText>
@@ -104,7 +116,7 @@
 						converterMessage="#{msgs.converterCp}"
 						validatorMessage="#{msgs.converterCp}">#{msgs.formCrearViajeCodigoPostalLlegada}
 					<f:convertNumber type="number" />
-						<f:validateLength minimun="5" maximum="5" />
+						<f:validateLength minimum="5" maximum="5" />
 					</p:inputText>
 					<h:message for="cpL" />
 					<p:separator />
@@ -179,3 +191,46 @@
 	</ui:define>
 
 </ui:composition>
+
+<!-- 
+				<h:panelGroup>
+					<p:selectOneMenu id="provinciaS" value="#{viaje.stateD}">
+						<f:selectItem itemLabel="#{msgs.formCrearViajeProvinciaSalida}"
+							itemValue="" />
+						<f:selectItems value="#{provincias.comunidades}" />
+					</p:selectOneMenu>
+					 <p:inputText id="provinciaS" value="#{viaje.stateD}"
+						required="true" requiredMessage="#{msgs.requiredProvinciaSalida}">#{msgs.formCrearViajeProvinciaSalida}</p:inputText>
+					<h:message for="provinciaS" />
+					<p:separator />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:selectOneMenu id="ciudadS" value="#{viaje.cityD}">
+						<f:selectItem itemLabel="#{msgs.formCrearViajeCiudadSalida}"
+							itemValue="" />
+						<f:selectItems itemValue="" value="#{provincias.provincias}" />
+					</p:selectOneMenu>
+					<p:separator />
+				</h:panelGroup>
+				 -->
+
+<!-- 
+				<h:panelGroup>
+					<p:inputText id="ciudadL" value="#{viaje.cityA}" required="true"
+						requiredMessage="#{msgs.requiredCiudadLlegada}">#{msgs.formCrearViajeCiudadLlegada}</p:inputText>
+					<h:message for="ciudadL" />
+					<p:separator />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:inputText id="provinciaL" value="#{viaje.stateA}"
+						required="true" requiredMessage="#{msgs.requiredProvinciaLlegada}">#{msgs.formCrearViajeProvinciaLlegada}</p:inputText>
+					<h:message for="provinciaL" />
+					<p:separator />
+				</h:panelGroup>
+				 -->
+<!-- 
+				 <p:multiSelectListbox id="provinciaS" value="#{provincia.provincia}"
+					effect="slide" header="Categories" showHeaders="false">
+					<f:selectItems value="#{provincia.comunidades}"/>
+				</p:multiSelectListbox>
+				 -->

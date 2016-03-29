@@ -3,6 +3,7 @@ package com.sdi.presentation;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.*;
@@ -140,6 +141,8 @@ public class BeanViaje extends Trip implements Serializable {
 	@PostConstruct
 	public void init() throws ParseException {
 		precarga();
+		provincias = service.getProvincias();
+		comunidades = serviceC.getComunidades();
 	}
 
 	public void setAddressD(String address) {
@@ -195,5 +198,67 @@ public class BeanViaje extends Trip implements Serializable {
 		this.countryA = country;
 		this.getDestination().setCountry(country);
 	}
+	
+	private String option;   
+    private Item provincia; 
+    private List<Item> provincias;
+    
+    private Item comunidad; 
+    private List<Item> comunidades;
+     
+    public BeanComunidades getServiceC() {
+		return serviceC;
+	}
+
+	public void setServiceC(BeanComunidades serviceC) {
+		this.serviceC = serviceC;
+	}
+
+	public Item getComunidad() {
+		return comunidad;
+	}
+
+	public void setComunidad(Item comunidad) {
+		this.comunidad = comunidad;
+	}
+
+	public List<Item> getComunidades() {
+		return comunidades;
+	}
+
+	@ManagedProperty("#{provincias}")
+    private BeanProvincias service;
+    
+    @ManagedProperty("#{comunidades}")
+    private BeanComunidades serviceC;
+     
+ 
+    public String getOption() {
+        return option;
+    }
+ 
+    public void setOption(String option) {
+        this.option = option;
+    }
+ 
+    public Item getProvincia() {
+		return provincia;
+	}
+
+	public void setProvincia(Item provincia) {
+		this.provincia = provincia;
+	}
+
+	public List<Item> getProvincias() {
+		return provincias;
+	}
+
+	public BeanProvincias getService() {
+		return service;
+	}
+
+	public void setService(BeanProvincias service) {
+        this.service = service;
+    }
 
 }
