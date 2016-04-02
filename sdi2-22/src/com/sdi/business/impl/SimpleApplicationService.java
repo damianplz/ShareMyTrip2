@@ -30,7 +30,6 @@ public class SimpleApplicationService implements ApplicationService {
 	@Override
 	public Application findById(Long userId, Long tripId)
 			throws NotPersistedException {
-		// TODO Auto-generated method stub
 		return new ApplicationFind().findById(userId,tripId);
 	}
 
@@ -46,13 +45,11 @@ public class SimpleApplicationService implements ApplicationService {
 
 	@Override
 	public List<Application> findByUser(Long userId) throws NotPersistedException {
-		// TODO Auto-generated method stub
 		return new ApplicationFind().findByUser(userId);
 	}
 
 	@Override
 	public List<Application> findByTrip(Long tripId) throws NotPersistedException {
-		// TODO Auto-generated method stub
 		return new ApplicationFind().findByTrip(tripId);
 	}
 

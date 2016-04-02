@@ -63,8 +63,8 @@ public class BeanSettings implements Serializable {
 		// Aqui habria que cambiar algo de código para coger locale del
 		// navegador
 		// la primera vez que se accede a getLocale(), de momento dejamos como
-		// idioma de partida “es”
-		setLocale(FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
+		// idioma de partida “es” CUIDADO CON LA LINEA DE ABAJOOOO 4h buscando que narices era 
+		//setLocale(FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
 		return(locale);
 	}
 
