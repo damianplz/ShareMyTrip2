@@ -34,7 +34,7 @@
 		<navigation-case>
 			<from-action>#{login.verify}</from-action>
 			<from-outcome>exito</from-outcome>
-			<to-view-id>/perfil.xhtml</to-view-id>
+			<to-view-id>/restricted/perfil.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>registro</from-outcome>
@@ -47,7 +47,7 @@
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
-		<from-view-id>/perfil.xhtml</from-view-id>
+		<from-view-id>/restricted/perfil.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{viajes.listado}</from-action>
 			<from-outcome>exito</from-outcome>
@@ -56,19 +56,19 @@
 		<navigation-case>
 			<from-action>#{viajes.misViajes}</from-action>
 			<from-outcome>exito</from-outcome>
-			<to-view-id>/propios.xhtml</to-view-id>
+			<to-view-id>/restricted/propios.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>alta</from-outcome>
-			<to-view-id>/nuevoViaje.xhtml</to-view-id>
+			<to-view-id>/restricted/nuevoViaje.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
-		<from-view-id>/nuevoViaje.xhtml</from-view-id>
+		<from-view-id>/restricted/nuevoViaje.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{viaje.crear}</from-action>
 			<from-outcome>exito</from-outcome>
-			<to-view-id>/perfil.xhtml</to-view-id>
+			<to-view-id>/restricted/perfil.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
@@ -76,7 +76,7 @@
 		<navigation-case>
 			<from-action>#{controller.registro}</from-action>
 			<from-outcome>exito</from-outcome>
-			<to-view-id>/perfil.xhtml</to-view-id>
+			<to-view-id>/restricted/perfil.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
@@ -84,20 +84,57 @@
 		<navigation-case>
 			<from-action>#{solicitudes.cargar(viaje)}</from-action>
 			<from-outcome>exito</from-outcome>
-			<to-view-id>/solicitudes.xhtml</to-view-id>
+			<to-view-id>/restricted/solicitudes.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{solicitudes.solicitar(viaje)}</from-action>
 			<from-outcome>exito</from-outcome>
-			<to-view-id>/perfil.xhtml</to-view-id>
+			<to-view-id>/restricted/perfil.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
-		<from-view-id>/solicitudes.xhtml</from-view-id>
+		<display-name>solicitudes.xhtml</display-name>
+		<from-view-id>/restricted/solicitudes.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{controller.cargar(app)}</from-action>
 			<from-outcome>exito</from-outcome>
-			<to-view-id>/usuario.xhtml</to-view-id>
+			<to-view-id>/restricted/usuario.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>perfil.xhtml</display-name>
+		<from-view-id>/restricted/perfil.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{login.delete}</from-action>
+			<from-outcome>cerrarSesion</from-outcome>
+			<to-view-id>/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>propios.xhtml</display-name>
+		<from-view-id>/restricted/propios.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{login.delete}</from-action>
+			<from-outcome>cerrarSesion</from-outcome>
+			<to-view-id>/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>nuevoViaje.xhtml</display-name>
+		<from-view-id>/restricted/nuevoViaje.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{login.delete}</from-action>
+			<from-outcome>cerrarSesion</from-outcome>
+			<to-view-id>/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>solicitudes.xhtml</display-name>
+		<from-view-id>/restricted/solicitudes.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{login.delete}</from-action>
+			<from-outcome>cerrarSesion</from-outcome>
+			<to-view-id>/index.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 </faces-config>

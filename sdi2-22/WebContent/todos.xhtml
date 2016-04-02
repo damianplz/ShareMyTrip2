@@ -24,14 +24,13 @@
 					<f:facet name="header">#{msgs.viajesLibres}</f:facet>#{viaje.availablePax}</p:column>
 				<p:column>
 					<f:facet name="header">#{msgs.viajesCierre}</f:facet>#{viaje.closingDate}</p:column>
-				<p:column>
+				<p:column rendered="#{login.validado}">
 					<f:facet name="header">#{msgs.viajesSolicitud}</f:facet>
 					<p:commandButton id="botonSolicitar" value="#{msgs.botonSolicitar}"
-						action="#{solicitudes.solicitar(viaje)}"
-						rendered="#{login.validado}" /> <!-- No me deja meter !viaje.propio en rendered cuando debería-->
+						action="#{solicitudes.solicitar(viaje)}" /> <!-- No me deja meter !viaje.propio en rendered cuando debería-->
 					<p:messages for="botonSolicitar" />
 				</p:column>
-				<p:column>
+				<p:column rendered="#{login.validado}">
 					<f:facet name="header">#{msgs.viajesVerSolicitud}</f:facet>
 					<p:commandButton id="botonVer" value="#{msgs.botonVer}"
 						action="#{solicitudes.cargar(viaje)}"
