@@ -43,6 +43,7 @@ public class BeanLogin extends User implements Serializable {
 		} else {
 			setResult("login_form_result_error");
 			resultado = "fracaso";
+			setValidado(false);
 		}
 		return resultado;
 	}
@@ -52,7 +53,7 @@ public class BeanLogin extends User implements Serializable {
 				.getExternalContext().getSessionMap();
 		session.remove("LOGGEDIN_USER");
 		setValidado(false);
-		return "exito";
+		return "cerrarSesion";
 	}
 
 	private void putUserInSession(User user) {
