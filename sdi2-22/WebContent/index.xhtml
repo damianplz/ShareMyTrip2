@@ -5,9 +5,12 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	template="/templates/template-general.xhtml">
+	
 	<ui:define name="titulo">#{msgs.login_form_title}</ui:define>
 	<ui:define name="cuerpo">
-		<ui:include src="/snippets/login-form.xhtml"/>
+		<center>
+			<ui:include src="/snippets/login-form.xhtml"/>
+		</center>
 	</ui:define>
 	<ui:define name="pie">
 		<ui:include src="/snippets/pie-casa.xhtml" />

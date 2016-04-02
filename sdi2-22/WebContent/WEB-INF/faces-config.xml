@@ -3,12 +3,14 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
 	version="2.2">
+	
 	<application>
 		<resource-bundle>
 			<base-name>messages</base-name>
 			<var>msgs</var>
 		</resource-bundle>
 	</application>
+	
 	<managed-bean>
 		<managed-bean-name>controller</managed-bean-name>
 		<managed-bean-class>com.sdi.presentation.BeanUsers</managed-bean-class>
@@ -22,7 +24,7 @@
 	<managed-bean>
 		<managed-bean-name>settings</managed-bean-name>
 		<managed-bean-class>com.sdi.presentation.BeanSettings</managed-bean-class>
-		<managed-bean-scope>application</managed-bean-scope>
+		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
 		<managed-bean-name>viajes</managed-bean-name>
