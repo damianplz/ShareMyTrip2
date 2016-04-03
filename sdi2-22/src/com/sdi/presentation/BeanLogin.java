@@ -20,6 +20,7 @@ public class BeanLogin extends User implements Serializable {
 
 	private String result = "login_form_result_valid";
 	private boolean validado = false;
+	
 
 	public boolean isValidado() {
 		return validado;

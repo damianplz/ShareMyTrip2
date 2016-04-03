@@ -2,12 +2,17 @@ package com.sdi.presentation;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.*;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+
+import org.primefaces.context.RequestContext;
 
 import com.sdi.business.ApplicationService;
 import com.sdi.business.TripService;
@@ -119,6 +124,7 @@ public class BeanSolicitudes implements Serializable {
 		}
 		return resultado;
 	}
+		     
 
 	public String cargar(Trip viaje) {
 		String resultado = "exito";
@@ -134,6 +140,10 @@ public class BeanSolicitudes implements Serializable {
 		return resultado;
 	}
 
+	public String getState(){
+		return null; //TODO
+	}
+	
 	public List<Application> getApplications() {
 		return applications;
 	}
