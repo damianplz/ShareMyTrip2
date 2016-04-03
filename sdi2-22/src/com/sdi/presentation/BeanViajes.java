@@ -22,6 +22,9 @@ import com.sdi.persistence.exception.NotPersistedException;
 public class BeanViajes {
 
 	private List<Trip> viajes;
+	private List<Trip> viajesDisponibles;
+	private int filas=5;
+	private int filasAux=filas;
 
 	@ManagedProperty(value = "#{viaje}")
 	private BeanViaje viaje;
@@ -98,6 +101,34 @@ public class BeanViajes {
 		return resultado;
 
 	}
+	
+	public List<Trip> getViajesDisponibles() {
+		
+		if (viajesDisponibles==null || filas!=filasAux) {
+			viajesDisponibles= new ArrayList<Trip>();
+			int contador=0;
+			
+			for (Trip trip : viajes) {
+				if (trip.getClosingDate().after(Calendar.getInstance().getTime())) {
+					if (trip.getAvailablePax()>0) {
+						if (contador<filas) {
+							viajesDisponibles.add(trip);
+							contador++;
+						}
+						
+					}
+				}
+			}
+			filasAux=filas;
+		}
+		
+		return viajesDisponibles;
+	}
+	
+	public void update(){
+		viajesDisponibles=getViajesDisponibles();
+	}
+	
 
 	public List<Trip> getViajes() {
 		return viajes;
@@ -105,6 +136,14 @@ public class BeanViajes {
 
 	public void setViajes(List<Trip> viajes) {
 		this.viajes = viajes;
+	}
+
+	public int getFilas() {
+		return filas;
+	}
+
+	public void setFilas(int filas) {
+		this.filas = filas;
 	}
 
 }

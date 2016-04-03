@@ -81,6 +81,7 @@ public class BeanUsers implements Serializable {
 		this.perfil = perfil;
 	}
 	
+	
 	public String cargar(Application app) throws ValidationException{
 		String resultado="exito";
 		UserService us;

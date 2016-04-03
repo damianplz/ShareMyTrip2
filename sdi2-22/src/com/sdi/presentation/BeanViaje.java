@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.*;
@@ -137,6 +138,7 @@ public class BeanViaje extends Trip implements Serializable {
 		}
 		return resultado;
 	}
+	
 
 	@PostConstruct
 	public void init() throws ParseException {
