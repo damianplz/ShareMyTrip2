@@ -10,14 +10,16 @@
 
 	<ui:define name="cuerpo">
 	<h:outputText value="#{login.name}"></h:outputText>
-		<p:menu id="menuPerfil">
-			<p:menuitem id="verTodos" value="Ver todos los viajes" 
-				action="#{viajes.listado}"/><p:separator/>
-			<p:menuitem id="verPropios" value="Ver viajes propios"
-				action="#{viajes.misViajes}" /><p:separator/>
-				<p:menuitem id="publicarViaje" value="Publicar un viaje"
-				outcome="alta"/><p:separator/>
-		</p:menu>
+		<center>
+			<p:menu id="menuPerfil">
+				<p:menuitem id="verTodos" value="Ver todos los viajes" 
+					action="#{viajes.listado}"/><p:separator/>
+				<p:menuitem id="verPropios" value="Ver viajes propios"
+					action="#{viajes.misViajes}" /><p:separator/>
+					<p:menuitem id="publicarViaje" value="Publicar un viaje"
+					outcome="alta"/><p:separator/>
+			</p:menu>	
+		</center>
 	</ui:define>
 	<ui:define name="pie">
 		<ui:include src="/snippets/pie-casa.xhtml" />
