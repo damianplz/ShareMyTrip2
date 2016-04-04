@@ -2,6 +2,9 @@ package com.sdi.model;
 
 import java.util.Date;
 
+import com.sdi.infrastructure.Factories;
+import com.sdi.persistence.exception.NotPersistedException;
+
 /**
  * This class is not an entity, it is a DTO with the same fields as 
  * a row in the table
@@ -47,9 +50,21 @@ public class Trip {
 		setEstimatedCost(coste);
 		setStatus(TripStatus.OPEN);
 		setPromoterId(userId);
-		
 	}
 
+	private User getPromotor(){
+		try {
+			return Factories.services.createUsersService().finById(promoterId);
+		} catch (NotPersistedException e) {
+			return null;//TODO OJO PELIGRO TESTEANDO
+		}
+	}
+	
+	public String getPromotorName(){
+		User user=getPromotor();
+		return user.getName() +" "+ user.getSurname();
+	}
+	
 	public AddressPoint getDeparture() {
 		return departure;
 	}

@@ -11,23 +11,21 @@
 	<ui:define name="cuerpo">
 		<h:form id="formTodos">
 			<p:dataTable id="tablaViajes" var="viaje" value="#{viajes.viajesDisponibles}"
-				border="1" emptyMessage="No travels found with given criteria"
-				widgetVar="travelsTable" sortMode="multiple">
+				border="1" emptyMessage="#{msgs.viajeNoEncontrado}"
+				widgetVar="travelsTable" sortMode="multiple" draggableRows="true"
+				rows="#{viajes.filas}">
 				
 				<f:facet name="header">
-            	<p:outputPanel>
-                	<h:outputText value="Number of row to display:" />
-                	<p:inputText id="globalFilter" value="#{viajes.filas}" 
-                	style="width:150px" placeholder="Enter a number"
+                	<h:outputText value="#{msgs.numeroDeFilas}" />
+                	<p:inputText id="filterRows" value="#{viajes.filas}" 
+                	style="width:150px" placeholder="#{msgs.introduceUnNumero}"
             		/>
-            		<p:commandButton value="actualizar"
+            		<p:commandButton value="#{msgs.actualizar}"
             		 actionListener="#{viajes.update}" update="tablaViajes"/>
-            		
-            	</p:outputPanel>
         		</f:facet>
 				
-				<p:column sortBy="#{viaje.departure.city}" 
-				filterBy="#{viaje.departure.city}" filterMatchMode="contains">
+				<p:column sortBy="#{viaje.departure.city}"
+				filterBy="#{viaje.departure.city}" filterMatchMode="contains" >
 					<f:facet name="header">#{msgs.viajesOrigen}</f:facet>
 					<h:outputText value="#{viaje.departure.city}" /></p:column>
 				<p:column sortBy="#{viaje.destination.city}"  filterBy="#{viaje.destination.city}" filterMatchMode="contains">
@@ -40,21 +38,21 @@
 					<f:facet name="header">#{msgs.viajesLibres}</f:facet>#{viaje.availablePax}</p:column>
 				<p:column>
 					<f:facet name="header">#{msgs.viajesCierre}</f:facet>#{viaje.closingDate}</p:column>
+				
+				<p:column rendered="#{login.validado}">
+					<f:facet name="header">#{msgs.promotor}</f:facet>
+					<h:outputLabel value="#{viaje.promotorName}" /> 
+				</p:column>
+				
 				<p:column rendered="#{login.validado}">
 					<f:facet name="header">#{msgs.viajesSolicitud}</f:facet>
 					<p:commandButton id="botonSolicitar" value="#{msgs.botonSolicitar}"
 						action="#{solicitudes.solicitar(viaje)}" /> 
 					<p:messages for="botonSolicitar" /> 
 				</p:column>
-				<p:column rendered="#{login.validado}">
-					<f:facet name="header">#{msgs.viajesVerSolicitud}</f:facet>
-					<p:commandButton id="botonVer" value="#{msgs.botonVer}"
-						action="#{solicitudes.cargar(viaje)}"
-						rendered="#{viaje.propio}" />
-					<p:messages for="botonVer" /> 
-				</p:column>
+
 			</p:dataTable>
-			<h:messages/>
+			
 		</h:form>
 	</ui:define>
 	<ui:define name="pie">

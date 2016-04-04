@@ -146,6 +146,7 @@ public class BeanViaje extends Trip implements Serializable {
 		provincias = service.getProvincias();
 		comunidades = serviceC.getComunidades();
 	}
+	
 
 	public void setAddressD(String address) {
 		this.addressD = address;
