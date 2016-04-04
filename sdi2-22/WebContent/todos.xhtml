@@ -47,7 +47,7 @@
 				<p:column rendered="#{login.validado}">
 					<f:facet name="header">#{msgs.viajesSolicitud}</f:facet>
 					<p:commandButton id="botonSolicitar" value="#{msgs.botonSolicitar}"
-						action="#{solicitudes.solicitar(viaje)}" /> 
+						action="#{solicitudes.solicitar(viaje)}" rendered="#{viajes.espropio(viaje)}"/> 
 					<p:messages for="botonSolicitar" /> 
 				</p:column>
 

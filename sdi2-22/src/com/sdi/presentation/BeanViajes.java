@@ -145,5 +145,14 @@ public class BeanViajes {
 	public void setFilas(int filas) {
 		this.filas = filas;
 	}
+	
+	public boolean espropio(Trip viaje){
+		boolean propio=true;
+		User user = (User) FacesContext.getCurrentInstance()
+				.getExternalContext().getSessionMap().get("LOGGEDIN_USER");
+		if(user!=null)
+			propio =  !viaje.getPromoterId().equals(user.getId());
+		return propio;
+	}
 
 }

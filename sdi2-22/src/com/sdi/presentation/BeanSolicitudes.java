@@ -263,7 +263,7 @@ public class BeanSolicitudes implements Serializable {
 				state = "PENDIENTE";
 			else if (Factories.services.createTripsService()
 					.findById(app.getTripId()).getClosingDate()
-					.after(new Date()) || Factories.services.createTripsService()
+					.before(new Date()) || Factories.services.createTripsService()
 					.findById(app.getTripId()).getAvailablePax()==0)
 				state = "SIN PLAZA";
 			else
@@ -294,7 +294,6 @@ public class BeanSolicitudes implements Serializable {
 					app.getUserId(), app.getTripId()) == null)
 				existe = false;
 		} catch (NotPersistedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			existe = false;
 
