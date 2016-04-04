@@ -38,20 +38,19 @@
 					<f:facet name="header">#{msgs.viajesLibres}</f:facet>#{viaje.availablePax}</p:column>
 				<p:column>
 					<f:facet name="header">#{msgs.viajesCierre}</f:facet>#{viaje.closingDate}</p:column>
+				
+				<p:column rendered="#{login.validado}">
+					<f:facet name="header">#{msgs.promotor}</f:facet>
+					<h:outputLabel value="#{viaje.promotorName}" /> 
+				</p:column>
+				
 				<p:column rendered="#{login.validado}">
 					<f:facet name="header">#{msgs.viajesSolicitud}</f:facet>
 					<p:commandButton id="botonSolicitar" value="#{msgs.botonSolicitar}"
 						action="#{solicitudes.solicitar(viaje)}" /> 
 					<p:messages for="botonSolicitar" /> 
 				</p:column>
-				<p:column rendered="#{login.validado}">
-					<f:facet name="header">#{msgs.viajesVerSolicitud}</f:facet>
-					<p:commandButton id="botonVer" value="#{msgs.botonVer}"
-						action="#{solicitudes.cargar(viaje)}"
-						rendered="#{viaje.propio}" />
-					<p:messages for="botonVer" /> 
-				</p:column>
-				
+
 			</p:dataTable>
 			
 		</h:form>
