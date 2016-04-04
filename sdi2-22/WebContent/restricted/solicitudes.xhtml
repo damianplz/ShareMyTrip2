@@ -9,7 +9,7 @@
 
 	<ui:define name="titulo">#{msgs.tituloSolicitudes}</ui:define>
 	<ui:define name="cuerpo">
-		<h:form>
+		<h:form id="formSolicitudes">
 			<p:dataTable id="tablaSolicitudes" var="app"
 				value="#{solicitudes.applications}" border="1">
 				<p:column>
@@ -18,24 +18,24 @@
 				<f:facet name="header">#{msgs.verPerfil}</f:facet>
 					<p:commandButton id="botonPerfil" value="#{msgs.botonVerPerfil}"
 						action="#{controller.cargar(app)}"/>
-					<p:messages for="botonConfirmarSolicitar" />
+					<p:messages for="botonVerPerfil" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">#{msgs.solicitudesConfirmarSolicitud}</f:facet>
 					<p:commandButton id="botonConfirmar"
 						value="#{msgs.botonConfirmarSolicitud}"
-						onclick="solicitudes.confirmar(app)" />
+						action="#{solicitudes.confirmar(app)}"  update="tablaSolicitudes" />
 					<p:messages for="botonConfirmarSolicitar" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">#{msgs.solicitudesCancelarSolicitud}</f:facet>
 					<p:commandButton id="botonCancelar"
 						value="#{msgs.botonCancelarSolicitar}"
-						onclick="solicitudes.cancelar(app)" />
+						action="#{solicitudes.cancelar(app)}" update="tablaSolicitudes"/>
 					<p:messages for="botonCancelarSolicitar" />
 				</p:column>
 			</p:dataTable>
-		</h:form>
+		</h:form >
 	</ui:define>
 	<ui:define name="pie">
 		<ui:include src="/snippets/pie-casa.xhtml" />

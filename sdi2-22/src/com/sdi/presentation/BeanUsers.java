@@ -90,7 +90,12 @@ public class BeanUsers implements Serializable {
 			setPerfil(us.finById(app.getUserId()));
 		} catch (NotPersistedException e) {
 			resultado="fracaso";
-			throw new ValidatorException(new FacesMessage(e.getMessage()));
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"formSolicitudes",
+					new FacesMessage(
+							"No se puede cargar el perfil del usuario"));
 		}
 		return resultado;
 	}

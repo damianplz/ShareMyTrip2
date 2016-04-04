@@ -2,10 +2,7 @@ package com.sdi.presentation;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.*;
@@ -15,12 +12,15 @@ import javax.faces.validator.ValidatorException;
 import org.primefaces.context.RequestContext;
 
 import com.sdi.business.ApplicationService;
+import com.sdi.business.ServicesFactory;
 import com.sdi.business.TripService;
 import com.sdi.infrastructure.Factories;
 import com.sdi.model.Application;
 import com.sdi.model.Seat;
+import com.sdi.model.SeatStatus;
 import com.sdi.model.Trip;
 import com.sdi.model.User;
+import com.sdi.persistence.PersistenceFactory;
 import com.sdi.persistence.exception.AlreadyPersistedException;
 import com.sdi.persistence.exception.NotPersistedException;
 
@@ -136,6 +136,124 @@ public class BeanSolicitudes implements Serializable {
 			resultado = "fracaso";
 			FacesMessage message = new FacesMessage(e.getMessage());
 			throw new ValidatorException(message);
+		}
+		return resultado;
+	}
+	
+	public String confirmar(Application app){
+		String resultado = "exito";
+		ServicesFactory factoria;
+		User usuario;
+		Trip viaje;
+		
+		try {
+			factoria = Factories.services;
+			
+			usuario = factoria.createUsersService().finById(app.getUserId());
+			viaje = factoria.createTripsService().findById(app.getTripId());
+			app = Factories.services.createApplicationsService().findById(usuario.getId(), viaje.getId());
+			if (app != null) {
+				if (viaje.getAvailablePax() > 0) {
+					if (viaje.getClosingDate().after(new Date())) {
+						if(factoria.createSeatsService().findByUserAndSeat(usuario.getId(), viaje.getId())==null){
+							viaje.setAvailablePax(viaje.getAvailablePax()-1);
+							factoria.createTripsService().updateTrip(viaje);
+							factoria.createSeatsService().saveSeat(new Seat(usuario.getId(),viaje.getId(),"",SeatStatus.ACCEPTED));
+							factoria.createApplicationsService().deleteApplication(app);
+						}else{
+							resultado = "fracaso";
+							FacesContext
+							.getCurrentInstance()
+							.addMessage(
+									"formSolicitudes",
+									new FacesMessage(
+											"El usuario ya tiene plaza en éste viaje"));
+						}
+						
+					}else{
+						resultado = "fracaso";
+						FacesContext
+						.getCurrentInstance()
+						.addMessage(
+								"formSolicitudes",
+								new FacesMessage(
+										"El plazo para aceptar solicitudes ya se ha cerrado"));
+					}
+				}else{
+					resultado = "fracaso";
+					FacesContext
+					.getCurrentInstance()
+					.addMessage(
+							"formSolicitudes",
+							new FacesMessage(
+									"No quedan plazas libres en éste viaje"));
+				}
+			}else{
+				resultado = "fracaso";
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"formSolicitudes",
+						new FacesMessage(
+								"Ha ocurrido algún error con la solicitud, no se puede confirmar"));
+			}
+		} catch (Exception e) {
+			resultado = "fracaso";
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"formSolicitudes",
+					new FacesMessage(
+							"Error al confirmar solicitud, contacte con su administrador"));		
+		}
+		return resultado;
+	}
+	
+	public String cancelar(Application app){
+		String resultado = "exito";
+		ServicesFactory factoria;
+		User usuario;
+		Trip viaje;
+		try{
+			factoria=Factories.services;
+			usuario = factoria.createUsersService().finById(app.getUserId());
+			viaje = factoria.createTripsService().findById(app.getTripId());
+			app=factoria.createApplicationsService().findById(usuario.getId(), viaje.getId());
+			if(app!=null){
+				if (viaje.getClosingDate().after(new Date())) {
+					viaje.setAvailablePax(viaje.getAvailablePax()+1);
+					factoria.createTripsService().updateTrip(viaje);
+					factoria.createSeatsService().updateSeat(new Seat(usuario.getId(), viaje.getId(), "",
+							SeatStatus.EXCLUDED));
+					factoria.createApplicationsService().deleteApplication(app);
+				}else{
+					resultado = "fracaso";
+					FacesContext
+					.getCurrentInstance()
+					.addMessage(
+							"formSolicitudes",
+							new FacesMessage(
+									"La fecha para cancelar solicitudes ha sido cerrada"));
+				}
+				
+			}else{
+				resultado = "fracaso";
+				FacesContext
+				.getCurrentInstance()
+				.addMessage(
+						"formSolicitudes",
+						new FacesMessage(
+								"La solicitud ya ha sido tratada anteriormente"));
+			}
+			
+		}catch (Exception e) {
+			resultado = "fracaso";
+			FacesContext
+			.getCurrentInstance()
+			.addMessage(
+					"formSolicitudes",
+					new FacesMessage(
+							"Error al denegar solicitud, contacte con su administrador"));		
 		}
 		return resultado;
 	}

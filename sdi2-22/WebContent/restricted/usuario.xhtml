@@ -9,7 +9,7 @@
 	<ui:define name="titulo">#{msgs.tituloPerfil}</ui:define>
 	<ui:define name="cuerpo">
 		<h:form>
-			<p:dataTable id="usuario" var="usuario" value="#{users.perfil}"
+			<p:dataTable id="usuario" var="usuario" value="#{controller.perfil}"
 				border="1">
 				<p:column>
 					<f:facet name="header">#{msgs.nombre}</f:facet>#{usuario.name}</p:column>
