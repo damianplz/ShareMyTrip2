@@ -60,8 +60,7 @@ public class BeanSolicitudes implements Serializable {
 		TripService ts;
 		try {
 			ts = Factories.services.createTripsService();
-			viaje = ts.findById(
-					viaje.getId());
+			viaje = ts.findById(viaje.getId());
 			if (viaje.getAvailablePax() > 0) {
 				Seat plaza = Factories.services.createSeatsService()
 						.findByUserAndSeat(getUserId(), viaje.getId());
@@ -83,7 +82,7 @@ public class BeanSolicitudes implements Serializable {
 											new FacesMessage(
 													"No se aceptan solicitudes fuera de plazo"));
 						}
-					}else{
+					} else {
 						resultado = "error";
 						FacesContext
 								.getCurrentInstance()
@@ -92,40 +91,31 @@ public class BeanSolicitudes implements Serializable {
 										new FacesMessage(
 												"No puede solicitar plaza en un viaje propio"));
 					}
-				}else{
+				} else {
 					resultado = "error";
-					FacesContext
-							.getCurrentInstance()
-							.addMessage(
-									"formTodos",
-									new FacesMessage(
-											"Ya ha solicitado plaza en éste viaje"));
-				}
-
-			}else{
-				resultado = "error";
-				FacesContext
-						.getCurrentInstance()
-						.addMessage(
-								"formTodos",
-								new FacesMessage(
-										"No quedan plazas libres en éste viaje"));
-			}
-		} catch (AlreadyPersistedException e) {
-			resultado = "error";
-			FacesContext
-					.getCurrentInstance()
-					.addMessage(
+					FacesContext.getCurrentInstance().addMessage(
 							"formTodos",
 							new FacesMessage(
 									"Ya ha solicitado plaza en éste viaje"));
+				}
+
+			} else {
+				resultado = "error";
+				FacesContext.getCurrentInstance().addMessage(
+						"formTodos",
+						new FacesMessage(
+								"No quedan plazas libres en éste viaje"));
+			}
+		} catch (AlreadyPersistedException e) {
+			resultado = "error";
+			FacesContext.getCurrentInstance().addMessage("formTodos",
+					new FacesMessage("Ya ha solicitado plaza en éste viaje"));
 		} catch (NotPersistedException er) {
 			er.printStackTrace();
 			resultado = "fracaso";
 		}
 		return resultado;
 	}
-		     
 
 	public String cargar(Trip viaje) {
 		String resultado = "exito";
@@ -140,140 +130,155 @@ public class BeanSolicitudes implements Serializable {
 		}
 		return resultado;
 	}
-	
-	public String confirmar(Application app){
+
+	public String confirmar(Application app) {
 		String resultado = "exito";
 		ServicesFactory factoria;
 		User usuario;
 		Trip viaje;
-		
+
 		try {
 			factoria = Factories.services;
-			
+
 			usuario = factoria.createUsersService().finById(app.getUserId());
 			viaje = factoria.createTripsService().findById(app.getTripId());
-			app = Factories.services.createApplicationsService().findById(usuario.getId(), viaje.getId());
+			app = Factories.services.createApplicationsService().findById(
+					usuario.getId(), viaje.getId());
 			if (app != null) {
 				if (viaje.getAvailablePax() > 0) {
 					if (viaje.getClosingDate().after(new Date())) {
-						if(factoria.createSeatsService().findByUserAndSeat(usuario.getId(), viaje.getId())==null){
-							viaje.setAvailablePax(viaje.getAvailablePax()-1);
+						if (factoria.createSeatsService().findByUserAndSeat(
+								usuario.getId(), viaje.getId()) == null) {
+							viaje.setAvailablePax(viaje.getAvailablePax() - 1);
 							factoria.createTripsService().updateTrip(viaje);
-							factoria.createSeatsService().saveSeat(new Seat(usuario.getId(),viaje.getId(),"",SeatStatus.ACCEPTED));
-							factoria.createApplicationsService().deleteApplication(app);
-						}else{
+							factoria.createSeatsService().saveSeat(
+									new Seat(usuario.getId(), viaje.getId(),
+											"", SeatStatus.ACCEPTED));
+							factoria.createApplicationsService()
+									.deleteApplication(app);
+						} else {
 							resultado = "fracaso";
 							FacesContext
-							.getCurrentInstance()
-							.addMessage(
-									"formSolicitudes",
-									new FacesMessage(
-											"El usuario ya tiene plaza en éste viaje"));
+									.getCurrentInstance()
+									.addMessage(
+											"formSolicitudes",
+											new FacesMessage(
+													"El usuario ya tiene plaza en éste viaje"));
 						}
-						
-					}else{
+
+					} else {
 						resultado = "fracaso";
 						FacesContext
-						.getCurrentInstance()
-						.addMessage(
-								"formSolicitudes",
-								new FacesMessage(
-										"El plazo para aceptar solicitudes ya se ha cerrado"));
+								.getCurrentInstance()
+								.addMessage(
+										"formSolicitudes",
+										new FacesMessage(
+												"El plazo para aceptar solicitudes ya se ha cerrado"));
 					}
-				}else{
+				} else {
 					resultado = "fracaso";
-					FacesContext
-					.getCurrentInstance()
-					.addMessage(
+					FacesContext.getCurrentInstance().addMessage(
 							"formSolicitudes",
 							new FacesMessage(
 									"No quedan plazas libres en éste viaje"));
 				}
-			}else{
+			} else {
 				resultado = "fracaso";
 				FacesContext
-				.getCurrentInstance()
-				.addMessage(
-						"formSolicitudes",
-						new FacesMessage(
-								"Ha ocurrido algún error con la solicitud, no se puede confirmar"));
+						.getCurrentInstance()
+						.addMessage(
+								"formSolicitudes",
+								new FacesMessage(
+										"Ha ocurrido algún error con la solicitud, no se puede confirmar"));
 			}
 		} catch (Exception e) {
 			resultado = "fracaso";
 			FacesContext
-			.getCurrentInstance()
-			.addMessage(
-					"formSolicitudes",
-					new FacesMessage(
-							"Error al confirmar solicitud, contacte con su administrador"));		
-		}
-		return resultado;
-	}
-	
-	public String cancelar(Application app){
-		String resultado = "exito";
-		ServicesFactory factoria;
-		User usuario;
-		Trip viaje;
-		try{
-			factoria=Factories.services;
-			usuario = factoria.createUsersService().finById(app.getUserId());
-			viaje = factoria.createTripsService().findById(app.getTripId());
-			app=factoria.createApplicationsService().findById(usuario.getId(), viaje.getId());
-			if(app!=null){
-				if (viaje.getClosingDate().after(new Date())) {
-					viaje.setAvailablePax(viaje.getAvailablePax()+1);
-					factoria.createTripsService().updateTrip(viaje);
-					factoria.createSeatsService().saveSeat(new Seat(usuario.getId(), viaje.getId(), "",
-							SeatStatus.EXCLUDED));
-					factoria.createApplicationsService().deleteApplication(app);
-				}else{
-					resultado = "fracaso";
-					FacesContext
 					.getCurrentInstance()
 					.addMessage(
 							"formSolicitudes",
 							new FacesMessage(
-									"La fecha para cancelar solicitudes ha sido cerrada"));
+									"Error al confirmar solicitud, contacte con su administrador"));
+		}
+		return resultado;
+	}
+
+	public String cancelar(Application app) {
+		String resultado = "exito";
+		ServicesFactory factoria;
+		User usuario;
+		Trip viaje;
+		try {
+			factoria = Factories.services;
+			usuario = factoria.createUsersService().finById(app.getUserId());
+			viaje = factoria.createTripsService().findById(app.getTripId());
+			app = factoria.createApplicationsService().findById(
+					usuario.getId(), viaje.getId());
+			if (app != null) {
+				if (viaje.getClosingDate().after(new Date())) {
+					viaje.setAvailablePax(viaje.getAvailablePax() + 1);
+					factoria.createTripsService().updateTrip(viaje);
+					factoria.createSeatsService().saveSeat(
+							new Seat(usuario.getId(), viaje.getId(), "",
+									SeatStatus.EXCLUDED));
+					factoria.createApplicationsService().deleteApplication(app);
+				} else {
+					resultado = "fracaso";
+					FacesContext
+							.getCurrentInstance()
+							.addMessage(
+									"formSolicitudes",
+									new FacesMessage(
+											"La fecha para cancelar solicitudes ha sido cerrada"));
 				}
-				
-			}else{
+
+			} else {
 				resultado = "fracaso";
 				FacesContext
-				.getCurrentInstance()
-				.addMessage(
-						"formSolicitudes",
-						new FacesMessage(
-								"La solicitud ya ha sido tratada anteriormente"));
+						.getCurrentInstance()
+						.addMessage(
+								"formSolicitudes",
+								new FacesMessage(
+										"La solicitud ya ha sido tratada anteriormente"));
 			}
-			
-		}catch (Exception e) {
+
+		} catch (Exception e) {
 			resultado = "fracaso";
+			FacesContext
+					.getCurrentInstance()
+					.addMessage(
+							"formSolicitudes",
+							new FacesMessage(
+									"Error al denegar solicitud, contacte con su administrador"));
+		}
+		return resultado;
+	}
+
+	public String state(Application app) {
+		Seat seat;
+		try {
+			seat = Factories.services.createSeatsService().findByUserAndSeat(
+					app.getUserId(), app.getTripId());
+			if (seat == null)
+				state = "PENDIENTE";
+			else if (Factories.services.createTripsService()
+					.findById(app.getTripId()).getClosingDate()
+					.after(new Date()) || Factories.services.createTripsService()
+					.findById(app.getTripId()).getAvailablePax()==0)
+				state = "SIN PLAZA";
+			else
+				state = seat.getStatus().name();
+		} catch (NotPersistedException e) {
 			FacesContext
 			.getCurrentInstance()
 			.addMessage(
 					"formSolicitudes",
 					new FacesMessage(
-							"Error al denegar solicitud, contacte con su administrador"));		
-		}
-		return resultado;
-	}
-
-	public String state(Application app){
-		Seat seat;
-		try {
-			seat = Factories.services.createSeatsService().findByUserAndSeat(app.getUserId(), app.getTripId());
-			if(seat==null){
-				state = "PENDIENTE";
-			}
-			else
-				state = seat.getStatus().name();
-		} catch (NotPersistedException e) {
-			e.printStackTrace();
+							"Error al buscar la solicitud, consulte con el administrador"));
 		}
 		return state;
 	}
-	
+
 	public List<Application> getApplications() {
 		return applications;
 	}
@@ -281,18 +286,19 @@ public class BeanSolicitudes implements Serializable {
 	public void setApplications(List<Application> applications) {
 		this.applications = applications;
 	}
-	
-	public boolean existe(Application app){
-		boolean existe=true;
-			try {
-				if(Factories.services.createApplicationsService().findById(app.getUserId(), app.getTripId())==null)
-					existe=false;
-			} catch (NotPersistedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				existe=false;
-				
-			}
+
+	public boolean existe(Application app) {
+		boolean existe = true;
+		try {
+			if (Factories.services.createApplicationsService().findById(
+					app.getUserId(), app.getTripId()) == null)
+				existe = false;
+		} catch (NotPersistedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			existe = false;
+
+		}
 
 		return !existe;
 	}
