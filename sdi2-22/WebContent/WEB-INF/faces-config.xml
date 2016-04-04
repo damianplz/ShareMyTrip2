@@ -3,14 +3,14 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
 	version="2.2">
-	
+
 	<application>
 		<resource-bundle>
 			<base-name>messages</base-name>
 			<var>msgs</var>
 		</resource-bundle>
 	</application>
-	
+
 	<managed-bean>
 		<managed-bean-name>controller</managed-bean-name>
 		<managed-bean-class>com.sdi.presentation.BeanUsers</managed-bean-class>
@@ -32,6 +32,14 @@
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-action>#{viajes.listado}</from-action>
+			<from-outcome>exito</from-outcome>
+			<to-view-id>/todos.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
 		<from-view-id>/index.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{login.verify}</from-action>
@@ -42,11 +50,7 @@
 			<from-outcome>registro</from-outcome>
 			<to-view-id>/registro.xhtml</to-view-id>
 		</navigation-case>
-		<navigation-case>
-			<from-action>#{viajes.listado}</from-action>
-			<from-outcome>exito</from-outcome>
-			<to-view-id>/todos.xhtml</to-view-id>
-		</navigation-case>
+
 	</navigation-rule>
 	<navigation-rule>
 		<from-view-id>/restricted/perfil.xhtml</from-view-id>
