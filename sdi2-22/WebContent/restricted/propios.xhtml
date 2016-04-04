@@ -10,18 +10,33 @@
 	<ui:define name="cuerpo">
 		<h:form>
 			<p:dataTable id="tablaMisViajes" var="viaje" value="#{viajes.viajes}"
-				border="1">
-				<p:column>
+				border="1" emptyMessage="No travels found with given criteria"
+				widgetVar="travelsTable" sortMode="multiple" draggableRows="true"
+				rows="#{viajes.filas}">
+				
+        		
+        		<f:facet name="header">
+                	<h:outputText value="#{msgs.numeroDeFilas}" />
+                	<p:inputText id="filterRows" value="#{viajes.filas}" 
+                	style="width:150px" placeholder="#{msgs.introduceUnNumero}"
+            		/>
+            		<p:commandButton value="#{msgs.actualizar}"
+            		 actionListener="#{viajes.update}" update="tablaMisViajes"/>
+        		</f:facet>
+        		
+				<p:column sortBy="#{viaje.departure.city}"
+				filterBy="#{viaje.departure.city}" filterMatchMode="contains">
 					<f:facet name="header">#{msgs.viajesOrigen}</f:facet>#{viaje.departure.city}</p:column>
-				<p:column>
+				<p:column sortBy="#{viaje.destination.city}" 
+				 filterBy="#{viaje.destination.city}" filterMatchMode="contains">
 					<f:facet name="header">#{msgs.viajesDestino}</f:facet>#{viaje.destination.city}</p:column>
-				<p:column>
+				<p:column  sortBy="#{viaje.departureDate}">
 					<f:facet name="header">#{msgs.viajesSalida}</f:facet>#{viaje.departureDate}</p:column>
-				<p:column>
+				<p:column sortBy="#{viaje.arrivalDate}">
 					<f:facet name="header">#{msgs.viajesLlegada}</f:facet>#{viaje.arrivalDate}</p:column>
-				<p:column>
+				<p:column sortBy="#{viaje.availablePax}">
 					<f:facet name="header">#{msgs.viajesLibres}</f:facet>#{viaje.availablePax}</p:column>
-				<p:column>
+				<p:column sortBy="#{viaje.closingDate}">
 					<f:facet name="header">#{msgs.viajesCierre}</f:facet>#{viaje.closingDate}</p:column>
 				<p:column>
 					<f:facet name="header">#{msgs.estadoConViaje}</f:facet>

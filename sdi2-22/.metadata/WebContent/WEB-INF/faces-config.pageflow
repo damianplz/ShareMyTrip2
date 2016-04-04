@@ -2,7 +2,11 @@
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14246831526460" configfile="/sdi2-22/WebContent/WEB-INF/faces-config.xml">
   <nodes xsi:type="pageflow:PFPage" name="index.xhtml" x="12" y="264" id="pf14589261775440" referenceLink="//@navigationRule.9/@navigationCase.1/@toViewId|" outlinks="pf14589261775441 pf14590067631242 pf14591621729377" inlinks="pf14595986562840 pf14596067866431 pf14596067866432 pf14596067866433" path="/index.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="perfil.xhtml" x="309" y="240" id="pf14589261775443" referenceLink="//@navigationRule.6/@fromViewId|" outlinks="pf14590217110049 pf14591599112130 pf14591621729378 pf14595986562840" inlinks="pf14589261775441 pf14591599112131 pf14591614250773 pf14591654869729" path="/restricted/perfil.xhtml"/>
+<<<<<<< HEAD
   <nodes xsi:type="pageflow:PFPage" name="solicitudes.xhtml" x="372" y="444" id="pf14590067328001" referenceLink="//@navigationRule.9/@fromViewId|" outlinks="pf14591804548432 pf14596067866433 pf14597849533132 pf14597849533133" inlinks="pf145916548697210 pf14596256733127" path="/restricted/solicitudes.xhtml"/>
+=======
+  <nodes xsi:type="pageflow:PFPage" name="solicitudes.xhtml" x="372" y="444" id="pf14590067328001" referenceLink="//@navigationRule.11/@navigationCase.0/@toViewId|" outlinks="pf14591804548432 pf14596067866433" inlinks="pf145916548697210 pf14596256733127" path="/restricted/solicitudes.xhtml"/>
+>>>>>>> master
   <nodes xsi:type="pageflow:PFPage" name="registro.xhtml" x="144" y="156" id="pf14590067631243" referenceLink="//@navigationRule.3/@fromViewId|" outlinks="pf14591614250773" inlinks="pf14590067631242" path="/registro.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="propios.xhtml" x="539" y="336" id="pf145902171100410" referenceLink="//@navigationRule.11/@fromViewId|" outlinks="pf14596067866431 pf14596256733127" inlinks="pf14590217110049" path="/restricted/propios.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="nuevoViaje.xhtml" x="468" y="192" id="pf14591599112132" referenceLink="//@navigationRule.8/@fromViewId|" outlinks="pf14591599112131 pf14596067866432" inlinks="pf14591599112130" path="/restricted/nuevoViaje.xhtml"/>
