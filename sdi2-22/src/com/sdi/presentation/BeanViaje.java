@@ -5,10 +5,13 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.*;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import com.sdi.infrastructure.Factories;
 import com.sdi.model.AddressPoint;
@@ -108,16 +111,21 @@ public class BeanViaje extends Trip implements Serializable {
 		setStatus(TripStatus.OPEN);
 	}
 
-	public void postcarga() throws ParseException {
+	public void postcarga(ActionEvent e) throws ParseException {
+		UIComponent a = e.getComponent();
+		Map<String, Object> mapa = a.getAttributes();
+		mapa.put(addressA, "Direccion A");
+		e.getSource().notify();
+		/*
 		setArrivalDate(new Date());
 		setAvailablePax(4);
 		setClosingDate(new Date());
 		setComments("...");
-		setDeparture(new AddressPoint("Calle salida", "Ciudad salida",
-				"Provincia salida", "Estado salida", "12345", new Waypoint(0.0,
+		setDeparture(new AddressPoint("Calle salida", "",
+				"", "Pais salida", "12345", new Waypoint(0.0,
 						0.0)));
 		setDestination(new AddressPoint("Calle llegada", "Ciudad llegada",
-				"Provincia llegada", "Estado llegada", "12345", new Waypoint(
+				"", "Pais llegada", "12345", new Waypoint(
 						0.0, 0.0)));
 		setDepartureDate(new Date());
 		setEstimatedCost(20.0);
@@ -125,7 +133,7 @@ public class BeanViaje extends Trip implements Serializable {
 		User u = (User) FacesContext.getCurrentInstance().getExternalContext()
 				.getSessionMap().get("LOGGEDIN_USER");
 		setPromoterId(u.getId());
-		setStatus(TripStatus.OPEN);
+		setStatus(TripStatus.OPEN);*/
 	}
 
 	public String crear() {
