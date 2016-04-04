@@ -32,6 +32,7 @@ public class BeanSolicitudes implements Serializable {
 
 	private Long userId;
 	private Long tripId;
+	private String state;
 
 	private List<Application> applications;
 
@@ -223,7 +224,7 @@ public class BeanSolicitudes implements Serializable {
 				if (viaje.getClosingDate().after(new Date())) {
 					viaje.setAvailablePax(viaje.getAvailablePax()+1);
 					factoria.createTripsService().updateTrip(viaje);
-					factoria.createSeatsService().updateSeat(new Seat(usuario.getId(), viaje.getId(), "",
+					factoria.createSeatsService().saveSeat(new Seat(usuario.getId(), viaje.getId(), "",
 							SeatStatus.EXCLUDED));
 					factoria.createApplicationsService().deleteApplication(app);
 				}else{
@@ -258,8 +259,19 @@ public class BeanSolicitudes implements Serializable {
 		return resultado;
 	}
 
-	public String getState(){
-		return null; //TODO
+	public String state(Application app){
+		Seat seat;
+		try {
+			seat = Factories.services.createSeatsService().findByUserAndSeat(app.getUserId(), app.getTripId());
+			if(seat==null){
+				state = "PENDIENTE";
+			}
+			else
+				state = seat.getStatus().name();
+		} catch (NotPersistedException e) {
+			e.printStackTrace();
+		}
+		return state;
 	}
 	
 	public List<Application> getApplications() {
@@ -268,6 +280,21 @@ public class BeanSolicitudes implements Serializable {
 
 	public void setApplications(List<Application> applications) {
 		this.applications = applications;
+	}
+	
+	public boolean existe(Application app){
+		boolean existe=true;
+			try {
+				if(Factories.services.createApplicationsService().findById(app.getUserId(), app.getTripId())==null)
+					existe=false;
+			} catch (NotPersistedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				existe=false;
+				
+			}
+
+		return !existe;
 	}
 
 }

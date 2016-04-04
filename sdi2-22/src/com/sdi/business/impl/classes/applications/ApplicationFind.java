@@ -14,8 +14,8 @@ public class ApplicationFind {
 	public Application findById(Long userId, Long tripId) throws NotPersistedException {
 		dao = Factories.persistence.newApplicationDao();
 		Application solicitud = dao.findById(new Long[]{userId,tripId});
-		if(solicitud == null)
-			throw new NotPersistedException("No se ha encontrado la solicitud");
+		/*if(solicitud == null)
+			throw new NotPersistedException("No se ha encontrado la solicitud");*/
 		return solicitud;
 	}
 

@@ -34,6 +34,11 @@
 						action="#{solicitudes.cancelar(app)}" update="tablaSolicitudes"/>
 					<p:messages for="botonCancelarSolicitar" />
 				</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.solicitudesEstadoSolicitud}</f:facet>
+					<h:outputText value="#{solicitudes.state(app)}"/>
+					<p:messages for="estadoSolicitud" />
+				</p:column>
 			</p:dataTable>
 		</h:form >
 	</ui:define>
