@@ -8,29 +8,29 @@
 	template="/templates/template-general.xhtml">
 	<ui:define name="titulo">#{msgs.tituloViajesPropios}</ui:define>
 	<ui:define name="cuerpo">
-		<h:form>
+		<h:form id="formularioPropios">
 			<p:dataTable id="tablaMisViajes" var="viaje" value="#{viajes.viajes}"
 				border="1" emptyMessage="No travels found with given criteria"
 				widgetVar="travelsTable" sortMode="multiple" draggableRows="true"
-				rows="#{viajes.filas}">
-				
-        		
-        		<f:facet name="header">
-                	<h:outputText value="#{msgs.numeroDeFilas}" />
-                	<p:inputText id="filterRows" value="#{viajes.filas}" 
-                	style="width:150px" placeholder="#{msgs.introduceUnNumero}"
-            		/>
-            		<p:commandButton value="#{msgs.actualizar}"
-            		 actionListener="#{viajes.update}" update="tablaMisViajes"/>
-        		</f:facet>
-        		
+				rows="#{viajes.filas}" selection="#{viajes.viajes}"
+				rowKey="#{viaje.id}">
+
+
+				<f:facet name="header">
+					<h:outputText value="#{msgs.numeroDeFilas}" />
+					<p:inputText id="filterRows" value="#{viajes.filas}"
+						style="width:150px" placeholder="#{msgs.introduceUnNumero}" />
+					<p:commandButton value="#{msgs.actualizar}"
+						actionListener="#{viajes.update}" update="tablaMisViajes" />
+				</f:facet>
+
 				<p:column sortBy="#{viaje.departure.city}"
-				filterBy="#{viaje.departure.city}" filterMatchMode="contains">
+					filterBy="#{viaje.departure.city}" filterMatchMode="contains">
 					<f:facet name="header">#{msgs.viajesOrigen}</f:facet>#{viaje.departure.city}</p:column>
-				<p:column sortBy="#{viaje.destination.city}" 
-				 filterBy="#{viaje.destination.city}" filterMatchMode="contains">
+				<p:column sortBy="#{viaje.destination.city}"
+					filterBy="#{viaje.destination.city}" filterMatchMode="contains">
 					<f:facet name="header">#{msgs.viajesDestino}</f:facet>#{viaje.destination.city}</p:column>
-				<p:column  sortBy="#{viaje.departureDate}">
+				<p:column sortBy="#{viaje.departureDate}">
 					<f:facet name="header">#{msgs.viajesSalida}</f:facet>#{viaje.departureDate}</p:column>
 				<p:column sortBy="#{viaje.arrivalDate}">
 					<f:facet name="header">#{msgs.viajesLlegada}</f:facet>#{viaje.arrivalDate}</p:column>
@@ -40,15 +40,34 @@
 					<f:facet name="header">#{msgs.viajesCierre}</f:facet>#{viaje.closingDate}</p:column>
 				<p:column>
 					<f:facet name="header">#{msgs.estadoConViaje}</f:facet>
-					<h:outputLabel value="#{msgs.estadoConViajePromotor}" rendered="#{viaje.propio}" /> 
+					<h:outputLabel value="#{msgs.estadoConViajePromotor}"
+						rendered="#{viaje.propio}" />
+					<h:outputLabel value="#{msgs.estadoConViajePasajero}"
+						rendered="#{viaje.propio==false}" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">#{msgs.viajesVerSolicitud}</f:facet>
 					<p:commandButton id="botonVer" value="#{msgs.botonVer}"
-						action="#{solicitudes.cargar(viaje)}"
-						rendered="#{viaje.propio}" />
+						action="#{solicitudes.cargar(viaje)}" rendered="#{viaje.propio}" />
 					<p:messages for="botonVer" />
 				</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.viajesCancelarSolicitud}</f:facet>
+					<p:commandButton id="botonCancelarSolicitud"
+						value="#{msgs.botonCancelarSolicitar}"
+						action="#{solicitudes.cancelarSolicitud(viaje)}"
+						update="tablaMisViajes" process="@form"
+						rendered="#{viaje.propio==false}" />
+					<p:messages for="botonCancelarSolicitud" />
+				</p:column>
+				<p:column selectionMode="multiple" >
+					<f:facet name="header">#{msgs.viajesCancelarViaje}</f:facet>
+					
+				</p:column>
+				<f:facet name="footer" style="text-align:right;">
+					<p:commandButton process="@form" update="tablaMisViajes"
+						value="Cancelar" action="#{viajes.cancelarViajes}"/>
+				</f:facet>
 			</p:dataTable>
 		</h:form>
 	</ui:define>

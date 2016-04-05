@@ -1,30 +1,38 @@
 package com.sdi.presentation;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import com.sdi.business.ServicesFactory;
 import com.sdi.infrastructure.Factories;
-import com.sdi.model.Application;
+import com.sdi.model.Seat;
+import com.sdi.model.SeatStatus;
 import com.sdi.model.Trip;
 import com.sdi.model.User;
 import com.sdi.persistence.exception.NotPersistedException;
 
+import org.primefaces.event.*;
+
 @ManagedBean(name = "viajes")
 @SessionScoped
-public class BeanViajes {
+public class BeanViajes implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private List<Trip> viajes;
 	private List<Trip> viajesDisponibles;
-	private int filas=5;
-	private int filasAux=filas;
+	private int filas = 5;
+	private int filasAux = filas;
 
 	@ManagedProperty(value = "#{viaje}")
 	private BeanViaje viaje;
@@ -67,7 +75,6 @@ public class BeanViajes {
 
 			viajes = viajesValidos;
 		} catch (NotPersistedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			resultado = "fracaso";
 		}
@@ -101,34 +108,34 @@ public class BeanViajes {
 		return resultado;
 
 	}
-	
+
 	public List<Trip> getViajesDisponibles() {
-		
-		if (viajesDisponibles==null || filas!=filasAux) {
-			viajesDisponibles= new ArrayList<Trip>();
-			int contador=0;
-			
+
+		if (viajesDisponibles == null || filas != filasAux) {
+			viajesDisponibles = new ArrayList<Trip>();
+			int contador = 0;
+
 			for (Trip trip : viajes) {
-				if (trip.getClosingDate().after(Calendar.getInstance().getTime())) {
-					if (trip.getAvailablePax()>0) {
-						if (contador<filas) {
+				if (trip.getClosingDate().after(
+						Calendar.getInstance().getTime())) {
+					if (trip.getAvailablePax() > 0) {
+						if (contador < filas) {
 							viajesDisponibles.add(trip);
 							contador++;
 						}
-						
+
 					}
 				}
 			}
-			filasAux=filas;
+			filasAux = filas;
 		}
-		
+
 		return viajesDisponibles;
 	}
-	
-	public void update(){
-		viajesDisponibles=getViajesDisponibles();
+
+	public void update() {
+		viajesDisponibles = getViajesDisponibles();
 	}
-	
 
 	public List<Trip> getViajes() {
 		return viajes;
@@ -145,14 +152,57 @@ public class BeanViajes {
 	public void setFilas(int filas) {
 		this.filas = filas;
 	}
-	
-	public boolean espropio(Trip viaje){
-		boolean propio=true;
+
+	public boolean espropio(Trip viaje) {
+		boolean propio = true;
 		User user = (User) FacesContext.getCurrentInstance()
 				.getExternalContext().getSessionMap().get("LOGGEDIN_USER");
-		if(user!=null)
-			propio =  !viaje.getPromoterId().equals(user.getId());
+		if (user != null)
+			propio = !viaje.getPromoterId().equals(user.getId());
 		return propio;
 	}
+
+	public void onRowSelect(SelectEvent event) {
+
+		
+		FacesMessage msg = new FacesMessage("Trip selected",
+				String.valueOf(((Trip) event.getObject()).getId()));
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+	
+	public void onRowUnselect(UnselectEvent event) {
+		
+		viajes.remove((Trip) event.getObject());
+		
+		FacesMessage msg = new FacesMessage("Trip Unselected",
+				String.valueOf(((Trip) event.getObject()).getId()));
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	public String cancelarViajes() {
+		String resultado = "exito";
+		ServicesFactory factoria;
+		List<Seat> seats;
+		try {
+			factoria = Factories.services;
+			for(Trip t:getViajes()){
+				seats = factoria.createSeatsService().findByTrip(t.getId());
+				if (seats != null)
+					for (Seat s : seats) {
+						s.setStatus(SeatStatus.EXCLUDED);
+						factoria.createSeatsService().updateSeat(s);
+					}
+				if(!espropio(t))
+					factoria.createTripsService().deleteTrip(t);
+			}
+		} catch (NotPersistedException e) {
+			resultado="fracaso";
+			e.printStackTrace();
+		}
+		misViajes();
+		return resultado;
+	}
+
+
 
 }

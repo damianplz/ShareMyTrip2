@@ -39,5 +39,9 @@ public class SimpleSeatService implements SeatService {
 	public List<Seat> getSeats() throws NotPersistedException{
 		return new SeatList().getSeats();
 	}
+	@Override
+	public List<Seat> findByTrip(Long id) throws NotPersistedException {
+		return new SeatFind().findByTrip(id);
+	}
 
 }

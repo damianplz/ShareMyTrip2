@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.sdi.infrastructure.Factories;
 import com.sdi.persistence.exception.NotPersistedException;
+import org.primefaces.model.SelectableDataModel;
 
 /**
  * This class is not an entity, it is a DTO with the same fields as 

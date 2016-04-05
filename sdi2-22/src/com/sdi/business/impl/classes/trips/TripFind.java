@@ -12,8 +12,6 @@ public class TripFind {
 	public Trip findById(Long tripId) throws NotPersistedException {
 		dao = Factories.persistence.newTripDao();
 		Trip viaje = dao.findById(tripId);
-		if(viaje==null)
-			throw new NotPersistedException("El viaje no existe");
 		return viaje;
 	}
 

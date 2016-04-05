@@ -13,5 +13,6 @@ public interface SeatService {
 	Seat findByUserAndSeat(Long userId, Long tripId) throws NotPersistedException;
 	void updateSeat(Seat seat) throws NotPersistedException;
 	List<Seat> getSeats() throws NotPersistedException;
+	List<Seat> findByTrip(Long id) throws NotPersistedException;
 
 }
