@@ -32,6 +32,11 @@ public class BeanLogin extends User implements Serializable {
 
 	public BeanLogin() {
 		System.out.println("BeanLogin		-		No		existia");
+		Map<String, Object> session = FacesContext.getCurrentInstance()
+				.getExternalContext().getSessionMap();
+		if (session.get("LOGGEDIN_USER")!=null) {
+			setValidado(true);
+		}
 	}
 
 	public String verify() {
@@ -60,9 +65,8 @@ public class BeanLogin extends User implements Serializable {
 	private void putUserInSession(User user) {
 		Map<String, Object> session = FacesContext.getCurrentInstance()
 				.getExternalContext().getSessionMap();
-		setValidado(true);
 		session.put("LOGGEDIN_USER", user);
-
+		setValidado(true);
 	}
 
 	public String getResult() {
