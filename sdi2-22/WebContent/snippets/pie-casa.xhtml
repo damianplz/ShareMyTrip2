@@ -5,11 +5,11 @@
 	xmlns:p="http://primefaces.org/ui">
 	<center>
 			<p:separator />
-			<p:commandLink value="#{msgs.enlaceCasa}" action="/restricted/perfil.xhtml" 
-			rendered="#{login.validado==true}">
-			</p:commandLink>
-			<p:commandLink value="#{msgs.enlaceCasa}" action="/index.xhtml" 
+			<p:commandLink value="${msgs.enlaceCasa}" action="/index.xhtml" 
 			rendered="#{login.validado==false}">
+			</p:commandLink>
+			<p:commandLink value="${msgs.perfil}" action="/restricted/perfil.xhtml" 
+			rendered="#{login.validado==true}">
 			</p:commandLink>
 	</center>
 </ui:composition>
