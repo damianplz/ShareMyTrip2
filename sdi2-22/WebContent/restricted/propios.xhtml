@@ -12,7 +12,7 @@
 			<p:dataTable id="tablaMisViajes" var="viaje" value="#{viajes.viajes}"
 				border="1" emptyMessage="No travels found with given criteria"
 				widgetVar="travelsTable" sortMode="multiple" draggableRows="true"
-				rows="#{viajes.filas}" selection="#{viajes.viajes}"
+				rows="#{viajes.filas}"  selection="#{viajes.viajes}"
 				rowKey="#{viaje.id}">
 
 
@@ -38,6 +38,8 @@
 					<f:facet name="header">#{msgs.viajesLibres}</f:facet>#{viaje.availablePax}</p:column>
 				<p:column sortBy="#{viaje.closingDate}">
 					<f:facet name="header">#{msgs.viajesCierre}</f:facet>#{viaje.closingDate}</p:column>
+				<p:column sortBy="#{viaje.status}">
+					<f:facet name="header">#{msgs.viajesEstado}</f:facet>#{viaje.status}</p:column>
 				<p:column>
 					<f:facet name="header">#{msgs.estadoConViaje}</f:facet>
 					<h:outputLabel value="#{msgs.estadoConViajePromotor}"
@@ -60,13 +62,19 @@
 						rendered="#{viaje.propio==false}" />
 					<p:messages for="botonCancelarSolicitud" />
 				</p:column>
+				<p:column>
+					<f:facet name="header">#{msgs.viajesEditar}</f:facet>
+					<p:commandButton id="botonEditarViaje" value="#{msgs.botonEditarViaje}"
+						action="#{viajes.cargar(viaje)}" rendered="#{viaje.propio}" />
+					<p:messages for="botonEditarViaje" />
+				</p:column>
 				<p:column selectionMode="multiple" >
 					<f:facet name="header">#{msgs.viajesCancelarViaje}</f:facet>
 					
 				</p:column>
 				<f:facet name="footer" style="text-align:right;">
 					<p:commandButton process="@form" update="tablaMisViajes"
-						value="Cancelar" action="#{viajes.cancelarViajes}"/>
+						value="#{msgs.botonCancelarViajes}" action="#{viajes.cancelarViajes}"/>
 				</f:facet>
 			</p:dataTable>
 		</h:form>

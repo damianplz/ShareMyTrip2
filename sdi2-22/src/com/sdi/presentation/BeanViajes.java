@@ -18,6 +18,7 @@ import com.sdi.infrastructure.Factories;
 import com.sdi.model.Seat;
 import com.sdi.model.SeatStatus;
 import com.sdi.model.Trip;
+import com.sdi.model.TripStatus;
 import com.sdi.model.User;
 import com.sdi.persistence.exception.NotPersistedException;
 
@@ -70,7 +71,8 @@ public class BeanViajes implements Serializable {
 			}
 			for (Trip tr : viajes)
 				if (tr.getClosingDate().after(Calendar.getInstance().getTime()))
-					if (tr.getAvailablePax() > 0)
+					if (tr.getAvailablePax() > 0
+							&& tr.getStatus().equals(TripStatus.OPEN))
 						viajesValidos.add(tr);
 
 			viajes = viajesValidos;
@@ -118,7 +120,8 @@ public class BeanViajes implements Serializable {
 			for (Trip trip : viajes) {
 				if (trip.getClosingDate().after(
 						Calendar.getInstance().getTime())) {
-					if (trip.getAvailablePax() > 0) {
+					if (trip.getAvailablePax() > 0
+							&& trip.getStatus().equals(TripStatus.OPEN)) {
 						if (contador < filas) {
 							viajesDisponibles.add(trip);
 							contador++;
@@ -164,16 +167,15 @@ public class BeanViajes implements Serializable {
 
 	public void onRowSelect(SelectEvent event) {
 
-		
 		FacesMessage msg = new FacesMessage("Trip selected",
 				String.valueOf(((Trip) event.getObject()).getId()));
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
-	
+
 	public void onRowUnselect(UnselectEvent event) {
-		
+
 		viajes.remove((Trip) event.getObject());
-		
+
 		FacesMessage msg = new FacesMessage("Trip Unselected",
 				String.valueOf(((Trip) event.getObject()).getId()));
 		FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -185,24 +187,51 @@ public class BeanViajes implements Serializable {
 		List<Seat> seats;
 		try {
 			factoria = Factories.services;
-			for(Trip t:getViajes()){
-				seats = factoria.createSeatsService().findByTrip(t.getId());
-				if (seats != null)
-					for (Seat s : seats) {
-						s.setStatus(SeatStatus.EXCLUDED);
-						factoria.createSeatsService().updateSeat(s);
-					}
-				if(!espropio(t))
-					factoria.createTripsService().deleteTrip(t);
+			for (Trip t : getViajes()) {
+				if (!espropio(t)) {
+					t.setStatus(TripStatus.CANCELLED);
+					factoria.createTripsService().updateTrip(t);
+					seats = factoria.createSeatsService().findByTrip(t.getId());
+					if (seats != null)
+						for (Seat s : seats) {
+							s.setStatus(SeatStatus.EXCLUDED);
+							factoria.createSeatsService().updateSeat(s);
+						}
+				}
 			}
 		} catch (NotPersistedException e) {
-			resultado="fracaso";
+			resultado = "fracaso";
 			e.printStackTrace();
 		}
 		misViajes();
 		return resultado;
 	}
+	
+	public String cargar(Trip viaje){
+		String resultado = "editar";
+		try {
+			establecerViaje(Factories.services.createTripsService().findById(viaje.getId()));
+		} catch (NotPersistedException e) {
+			resultado = "fracaso";
+			e.printStackTrace();
+		}
+		return resultado;
+	}
 
-
+	private void establecerViaje(Trip viaje) {
+		this.viaje.setDeparture(viaje.getDeparture());
+		this.viaje.setDestination(viaje.getDestination());
+		this.viaje.setArrivalDate(viaje.getArrivalDate());
+		this.viaje.setAvailablePax(viaje.getAvailablePax());
+		this.viaje.setClosingDate(viaje.getClosingDate());
+		this.viaje.setComments(viaje.getComments());
+		this.viaje.setDepartureDate(viaje.getDepartureDate());
+		this.viaje.setEstimatedCost(viaje.getEstimatedCost());
+		this.viaje.setId(viaje.getId());
+		this.viaje.setMaxPax(viaje.getMaxPax());
+		this.viaje.setPromoterId(viaje.getPromoterId());
+		this.viaje.setStatus(viaje.getStatus());
+		
+	}
 
 }
