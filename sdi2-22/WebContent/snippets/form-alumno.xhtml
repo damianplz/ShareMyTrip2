@@ -10,7 +10,9 @@
 				requiredMessage="#{msgs.formAlta_nombre_requiredMessage}"
 				validatorMessage="#{msgs.formAlta_nombre_validatorMessage}"
 				id="nombre">
-				<f:validateLength maximum="20" />
+				 <f:param value="4" />
+				  <f:param value="20" />
+				<f:validateLength maximum="20" minimum="4"/>
 			</p:inputText>
 			<p:message for="nombre" />
 		</h:panelGroup>
