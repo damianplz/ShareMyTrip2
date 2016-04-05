@@ -206,6 +206,7 @@ public class BeanSolicitudes implements Serializable {
 		ServicesFactory factoria;
 		User usuario;
 		Trip viaje;
+		Seat plaza;
 		try {
 			factoria = Factories.services;
 			usuario = factoria.createUsersService().finById(app.getUserId());
@@ -214,11 +215,17 @@ public class BeanSolicitudes implements Serializable {
 					usuario.getId(), viaje.getId());
 			if (app != null) {
 				if (viaje.getClosingDate().after(new Date())) {
-					viaje.setAvailablePax(viaje.getAvailablePax() + 1);
-					factoria.createTripsService().updateTrip(viaje);
-					factoria.createSeatsService().saveSeat(
-							new Seat(usuario.getId(), viaje.getId(), "",
-									SeatStatus.EXCLUDED));
+					plaza=factoria.createSeatsService().findByUserAndSeat(usuario.getId(), viaje.getId());
+					if(plaza!=null){
+						viaje.setAvailablePax(viaje.getAvailablePax() + 1);
+						plaza.setStatus(SeatStatus.EXCLUDED);
+						factoria.createSeatsService().updateSeat(plaza);
+					}else{
+						factoria.createSeatsService().saveSeat(
+								new Seat(usuario.getId(), viaje.getId(), "",
+										SeatStatus.EXCLUDED));
+					}
+					factoria.createTripsService().updateTrip(viaje);				
 					factoria.createApplicationsService().deleteApplication(app);
 				} else {
 					resultado = "fracaso";

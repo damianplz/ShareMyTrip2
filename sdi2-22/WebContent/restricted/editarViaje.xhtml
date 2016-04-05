@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/template-general.xhtml">
+	<ui:define name="titulo">#{msgs.tituloPerfil}</ui:define>
+	<ui:define name="cuerpo">
+		<h:form id="editarviaje">
+			<p:panelGrid id="viajeSalida" columns="1" cellpadding="5">
+				<h:panelGroup>
+					<p:inputText id="calleSE" value="#{viaje.addressD}" required="true"
+						requiredMessage="#{msgs.requiredCalleSalida}">#{msgs.formCrearViajeCalleSalida}</p:inputText>
+					<h:message for="calleSE" />
+					<p:separator />
+				</h:panelGroup>
+
+				<h:panelGrid>
+					<p:selectOneListbox id="listaCiudadesDE" value="#{viaje.cityD}"
+						var="t" filter="true" filterMatchMode="contains">
+						<f:selectItems value="#{viaje.provincias}" var="p"
+							itemLabel="#{p.displayName}" itemValue="#{p}">
+						</f:selectItems>
+
+						<p:column>
+							<h:outputText value="#{t.displayName}" />
+						</p:column>
+					</p:selectOneListbox>
+				</h:panelGrid>
+				<h:panelGrid>
+					<p:selectOneListbox id="listaComunidadesDE" value="#{viaje.stateD}"
+						var="r" filter="true" filterMatchMode="contains">
+						<f:selectItems value="#{viaje.comunidades}" var="s"
+							itemLabel="#{s.displayName}" itemValue="#{s}">
+						</f:selectItems>
+
+						<p:column>
+							<h:outputText value="#{r.displayName}" />
+						</p:column>
+					</p:selectOneListbox>
+				</h:panelGrid>
+
+				<h:panelGroup>
+					<p:inputText id="paisSE" value="#{viaje.countryD}" required="true"
+						requiredMessage="#{msgs.requiredPaisSalida}">#{msgs.formCrearViajePaisSalida}</p:inputText>
+					<h:message for="paisSE" />
+					<p:separator />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:inputText id="cpSE" value="#{viaje.zipCodeD}" required="true"
+						size="5" requiredMessage="#{msgs.requiredCpSalida}"
+						converterMessage="#{msgs.converterCp}"
+						validatorMessage="#{msgs.converterCp}">#{msgs.formCrearViajeCodigoPostalSalida}		
+					<f:convertNumber type="number" />
+						<f:validateLength minimum="5" maximum="5" />
+					</p:inputText>
+					<h:message for="cpSE" />
+					<p:separator />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:inputText id="fechaSE" value="#{viaje.departureDate}"
+						required="true" requiredMessage="#{msgs.requiredFechaSalida}"
+						converterMessage="#{msgs.converterFecha}">#{msgs.formCrearViajeFechaSalida}
+					<f:convertDateTime type="both" />
+					</p:inputText>
+					<h:message for="fechaSE" />
+					<p:separator />
+				</h:panelGroup>
+			</p:panelGrid>
+			<p:panelGrid id="viajeLlegadaE" columns="1" cellpadding="5">
+				<h:panelGroup>
+					<p:inputText id="calleLE" value="#{viaje.addressA}" required="true"
+						requiredMessage="#{msgs.requiredCalleLlegada}">#{msgs.formCrearViajeCalleLlegada}</p:inputText>
+					<h:message for="calleLE" />
+					<p:separator />
+				</h:panelGroup>
+				<h:panelGrid>
+					<p:selectOneListbox id="listaCiudadesSE" value="#{viaje.cityA}"
+						var="t" filter="true" filterMatchMode="contains">
+						<f:selectItems value="#{viaje.provincias}" var="p"
+							itemLabel="#{p.displayName}" itemValue="#{p}">
+						</f:selectItems>
+
+
+						<p:column>
+							<h:outputText value="#{t.displayName}" />
+						</p:column>
+
+					</p:selectOneListbox>
+				</h:panelGrid>
+				<h:panelGrid>
+					<p:selectOneListbox id="listaComunidadesAE" value="#{viaje.stateA}"
+						var="r" filter="true" filterMatchMode="contains">
+						<f:selectItems value="#{viaje.comunidades}" var="s"
+							itemLabel="#{s.displayName}" itemValue="#{s}">
+						</f:selectItems>
+
+						<p:column>
+							<h:outputText value="#{r.displayName}" />
+						</p:column>
+					</p:selectOneListbox>
+				</h:panelGrid>
+
+
+				<h:panelGroup>
+					<p:inputText id="paisLE" value="#{viaje.countryA}" required="true"
+						requiredMessage="#{msgs.requiredPaisLlegada}">#{msgs.formCrearViajePaisLlegada}</p:inputText>
+					<h:message for="paisLE" />
+					<p:separator />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:inputText id="cpLE" value="#{viaje.zipCodeA}" size="5"
+						required="true" requiredMessage="#{msgs.requiredCpLlegada}"
+						converterMessage="#{msgs.converterCp}"
+						validatorMessage="#{msgs.converterCp}">#{msgs.formCrearViajeCodigoPostalLlegada}
+					<f:convertNumber type="number" />
+						<f:validateLength minimum="5" maximum="5" />
+					</p:inputText>
+					<h:message for="cpLE" />
+					<p:separator />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:inputText id="fechaLE" value="#{viaje.arrivalDate}"
+						required="true" requiredMessage="#{msgs.requiredFechaLlegada}"
+						converterMessage="#{msgs.converterFecha}">#{msgs.formCrearViajeFechaLlegada}
+					<f:convertDateTime type="both" />
+					</p:inputText>
+					<h:message for="fechaLE" />
+					<p:separator />
+				</h:panelGroup>
+			</p:panelGrid>
+			<p:panelGrid id="viajeRestoE" columns="1" cellpadding="5">
+				<h:panelGroup>
+					<p:inputText id="limiteE" value="#{viaje.closingDate}"
+						required="true" requiredMessage="#{msgs.requiredFechaLimite}"
+						converterMessage="#{msgs.converterFecha}">#{msgs.formCrearViajeFechaLimite}
+					<f:convertDateTime type="both" />
+					</p:inputText>
+					<h:message for="limiteE" />
+					<p:separator />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:inputText id="costeE" value="#{viaje.estimatedCost}"
+						required="true" requiredMessage="#{msgs.requiredCosteEstimado}"
+						converterMessage="#{msgs.converterCoste}">#{msgs.formCrearViajeCoste}
+						<f:convertNumber type="number" maxFractionDigits="2"></f:convertNumber>
+					</p:inputText>
+					<p:separator />
+					<h:message for="costeE" />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:inputText id="commentE" value="#{viaje.comments}">#{msgs.formCrearViajeComentarios}</p:inputText>
+					<p:separator />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:inputText id="paxME" value="#{viaje.maxPax}" required="true"
+						requiredMessage="#{msgs.requiredPlazasMaximas}"
+						converterMessage="#{msgs.converterPlazas}">#{msgs.formCrearViajePlazasMaximas}<f:convertNumber
+							type="number" />
+					</p:inputText>
+
+					<h:message for="paxME" />
+					<p:separator />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:inputText id="paxAE" value="#{viaje.availablePax}"
+						required="true"
+						requiredMessage="#{msgs.requiredPlazasDisponibles}"
+						converterMessage="#{msgs.converterPlazas}">#{msgs.formCrearViajePlazasLibres}<f:convertNumber
+							type="number" />
+					</p:inputText>
+
+					<h:message for="paxAE" />
+					<p:separator />
+				</h:panelGroup>
+				<h:panelGroup>
+					<p:commandButton id="actE" value="#{msgs.botonActualizar}"
+						action="#{viaje.actualizar}"  process="@form" />
+					<p:commandButton value="#{msgs.botonVolver}"
+						onclick="window.history.back();" immediate="true" />
+					<h:message for="actE" />
+				</h:panelGroup>
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+	<ui:define name="pie">
+		<ui:include src="/snippets/pie-casa.xhtml" />
+	</ui:define>
+
+</ui:composition>
+
+
+

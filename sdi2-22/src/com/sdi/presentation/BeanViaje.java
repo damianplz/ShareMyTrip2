@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -20,6 +19,7 @@ import com.sdi.model.TripStatus;
 import com.sdi.model.User;
 import com.sdi.model.Waypoint;
 import com.sdi.persistence.exception.AlreadyPersistedException;
+import com.sdi.persistence.exception.NotPersistedException;
 
 @ManagedBean(name = "viaje")
 @SessionScoped
@@ -271,5 +271,16 @@ public class BeanViaje extends Trip implements Serializable {
 	public void setService(BeanProvincias service) {
         this.service = service;
     }
+	
+	public String actualizar(){
+		String resultado = "exito";
+		try {
+			Factories.services.createTripsService().updateTrip(this);
+		} catch (NotPersistedException e) {
+			e.printStackTrace();
+			resultado = "fracaso";
+		}
+		return resultado;
+	}
 
 }
