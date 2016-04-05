@@ -13,7 +13,11 @@
 			<p:panelGrid id="registro" columns="1" cellpadding="5">
 				<h:panelGroup>
 					<p:inputText id="userId" value="#{controller.user.login}" required="true"
-						requiredMessage="#{msgs.requiredLoginUsuario}">#{msgs.userid}</p:inputText>
+						requiredMessage="#{msgs.requiredLoginUsuario}"
+						validatorMessage="#{msgs.formAlta_nombre_validatorMessage}">
+						#{msgs.userid}
+						<f:validateLength maximum="8" minimum="5"/>
+						</p:inputText>
 						<h:message for="userId" />
 					<p:separator />
 				</h:panelGroup>
@@ -38,23 +42,31 @@
 				</h:panelGroup>
 				<h:panelGroup>
 					<p:inputText id="apellidos" value="#{controller.user.surname}" required="true"
-						requiredMessage="#{msgs.requiredApellidosUsuario}">#{msgs.apellidos}</p:inputText>
+						requiredMessage="#{msgs.requiredApellidosUsuario}"
+						validatorMessage="#{msgs.formAlta_apellidos_validatorMessage}">
+						>#{msgs.apellidos}
+						<f:validateLength maximum="40" />
+						</p:inputText>
 					<h:message for="apellidos" />
 					<p:separator />
 				</h:panelGroup>
 				<h:panelGroup>
 					<p:inputText id="correo" value="#{controller.user.email}" required="true"
-						requiredMessage="#{msgs.requiredEmailUsuario}">#{msgs.correo}</p:inputText>
+						requiredMessage="#{msgs.requiredEmailUsuario}"
+						validatorMessage="#{msgs.formAlta_correo_validatorMessage}"
+						>#{msgs.correo}
+						<f:validateRegex pattern=".+@.+\.[a-z]+" />
+						</p:inputText>
 					<h:message for="correo" />
 					<p:separator />
 				</h:panelGroup>
 				<h:panelGroup>
-					<p:commandButton id="pr" value="#{msgs.botonSalvar}"
+					<p:commandButton id="btnRegistrar" value="#{msgs.botonSalvar}"
 						action="#{controller.registro}" update="@all" process="@form" />
 					<p:commandButton value="#{msgs.botonVolver}"
 						onclick="window.history.back();" immediate="true" />
 				</h:panelGroup>
-				<h:messages for="registroForm"></h:messages>
+				<h:messages style="color:red" for="registroForm"></h:messages>
 			</p:panelGrid>
 			
 		</h:form>
