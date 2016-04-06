@@ -11,7 +11,7 @@
 		<h:form id="editarviaje">
 			<p:panelGrid id="viajeSalida" columns="1" cellpadding="5">
 				<h:panelGroup>
-					<p:inputText id="calleSE" value="#{viaje.addressD}" required="true" p
+					<p:inputText id="calleSE" value="#{viaje.addressD}" required="true"
 						requiredMessage="#{msgs.requiredCalleSalida}">#{msgs.formCrearViajeCalleSalida}</p:inputText>
 					<h:message for="calleSE" />
 					<p:separator />
@@ -177,7 +177,7 @@
 				</h:panelGroup>
 				<h:panelGroup>
 					<p:commandButton id="actE" value="#{msgs.botonActualizar}"
-						action="#{viajes.actualizar(viaje)}"  update="editarviaje" process="@form" />
+						action="#{viajes.actualizar(viaje)}"  update="@all" process="@all" />
 					<p:commandButton value="#{msgs.botonVolver}"
 						onclick="window.history.back();" immediate="true" />
 					<h:message for="actE" />
