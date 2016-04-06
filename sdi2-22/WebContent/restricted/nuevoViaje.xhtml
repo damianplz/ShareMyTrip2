@@ -182,12 +182,6 @@
 						update="crearviaje" process="crearviaje" inmediate="true">
 
 					</p:commandButton>
-					<!-- 	<h:commandLink value="submit”
-actionListener="#{bean.listener1}" action="#{bean.submit}">
-<f:actionListener type="com.example.SomeActionListener" />
-<f:setPropertyActionListener target="#{bean.property}"
-value="some" />
-</h:commandLink> -->
 					<p:commandButton value="#{msgs.botonVolver}"
 						onclick="window.history.back();" immediate="true" />
 				</h:panelGroup>
@@ -200,45 +194,4 @@ value="some" />
 
 </ui:composition>
 
-<!-- 
-				<h:panelGroup>
-					<p:selectOneMenu id="provinciaS" value="#{viaje.stateD}">
-						<f:selectItem itemLabel="#{msgs.formCrearViajeProvinciaSalida}"
-							itemValue="" />
-						<f:selectItems value="#{provincias.comunidades}" />
-					</p:selectOneMenu>
-					 <p:inputText id="provinciaS" value="#{viaje.stateD}"
-						required="true" requiredMessage="#{msgs.requiredProvinciaSalida}">#{msgs.formCrearViajeProvinciaSalida}</p:inputText>
-					<h:message for="provinciaS" />
-					<p:separator />
-				</h:panelGroup>
-				<h:panelGroup>
-					<p:selectOneMenu id="ciudadS" value="#{viaje.cityD}">
-						<f:selectItem itemLabel="#{msgs.formCrearViajeCiudadSalida}"
-							itemValue="" />
-						<f:selectItems itemValue="" value="#{provincias.provincias}" />
-					</p:selectOneMenu>
-					<p:separator />
-				</h:panelGroup>
-				 -->
 
-<!-- 
-				<h:panelGroup>
-					<p:inputText id="ciudadL" value="#{viaje.cityA}" required="true"
-						requiredMessage="#{msgs.requiredCiudadLlegada}">#{msgs.formCrearViajeCiudadLlegada}</p:inputText>
-					<h:message for="ciudadL" />
-					<p:separator />
-				</h:panelGroup>
-				<h:panelGroup>
-					<p:inputText id="provinciaL" value="#{viaje.stateA}"
-						required="true" requiredMessage="#{msgs.requiredProvinciaLlegada}">#{msgs.formCrearViajeProvinciaLlegada}</p:inputText>
-					<h:message for="provinciaL" />
-					<p:separator />
-				</h:panelGroup>
-				 -->
-<!-- 
-				 <p:multiSelectListbox id="provinciaS" value="#{provincia.provincia}"
-					effect="slide" header="Categories" showHeaders="false">
-					<f:selectItems value="#{provincia.comunidades}"/>
-				</p:multiSelectListbox>
-				 -->
