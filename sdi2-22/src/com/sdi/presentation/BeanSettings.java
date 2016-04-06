@@ -9,6 +9,8 @@ import javax.faces.bean.*;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import alb.util.log.Log;
+
 @ManagedBean(name = "settings")
 @SessionScoped
 public class BeanSettings implements Serializable {
@@ -80,7 +82,7 @@ public class BeanSettings implements Serializable {
 			if (user != null)
 				user.iniciaUser(null);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			Log.error("No se puede cambiar el idioma a español");
 		}
 	}
 
@@ -91,7 +93,7 @@ public class BeanSettings implements Serializable {
 			if (user != null)
 				user.iniciaUser(null);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			Log.error("No se puede cambiar el idioma a inglés");
 		}
 	}
 
