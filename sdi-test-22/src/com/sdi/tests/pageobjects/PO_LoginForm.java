@@ -19,7 +19,7 @@ public class PO_LoginForm {
 		password.clear();
 		password.sendKeys(passwordUser);
 		//Pulsar el boton de Login.
-		By boton = By.id("form-cuerpo:j_idt20");
+		By boton = By.id("form-cuerpo:btnLogin");
 		driver.findElement(boton).click();	   
    }
 	
