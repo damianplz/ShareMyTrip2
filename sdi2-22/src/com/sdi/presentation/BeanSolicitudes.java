@@ -215,17 +215,18 @@ public class BeanSolicitudes implements Serializable {
 					usuario.getId(), viaje.getId());
 			if (app != null) {
 				if (viaje.getClosingDate().after(new Date())) {
-					plaza=factoria.createSeatsService().findByUserAndSeat(usuario.getId(), viaje.getId());
-					if(plaza!=null){
+					plaza = factoria.createSeatsService().findByUserAndSeat(
+							usuario.getId(), viaje.getId());
+					if (plaza != null) {
 						viaje.setAvailablePax(viaje.getAvailablePax() + 1);
 						plaza.setStatus(SeatStatus.EXCLUDED);
 						factoria.createSeatsService().updateSeat(plaza);
-					}else{
+					} else {
 						factoria.createSeatsService().saveSeat(
 								new Seat(usuario.getId(), viaje.getId(), "",
 										SeatStatus.EXCLUDED));
 					}
-					factoria.createTripsService().updateTrip(viaje);				
+					factoria.createTripsService().updateTrip(viaje);
 					factoria.createApplicationsService().deleteApplication(app);
 				} else {
 					resultado = "fracaso";
@@ -308,7 +309,7 @@ public class BeanSolicitudes implements Serializable {
 		return !existe;
 	}
 
-	public String cancelarSolicitud(Trip viaje) {
+	/*public String cancelarSolicitud(Trip viaje) {
 		String resultado = "exito";
 		ServicesFactory factoria;
 		User usuario;
@@ -327,42 +328,45 @@ public class BeanSolicitudes implements Serializable {
 						usuario.getId(), viaje.getId());
 				if (app != null) {
 					factoria.createApplicationsService().deleteApplication(app);
-					
-				} else if (seat != null) {
-					seat.setStatus(SeatStatus.EXCLUDED);
-					factoria.createSeatsService().updateSeat(seat);
-					viaje.setAvailablePax(viaje.getAvailablePax()+1);
-					factoria.createTripsService().updateTrip(viaje);
-				} else {
-					resultado = "FRACASO";
-					FacesContext
-					.getCurrentInstance()
-					.addMessage(
-							"botonCancelarSolicitud",
-							new FacesMessage(
-									"No tienes plaza en éste viaje"));
+					if (seat != null) {
+						seat.setStatus(SeatStatus.EXCLUDED);
+						factoria.createSeatsService().updateSeat(seat);
+						viaje.setAvailablePax(viaje.getAvailablePax() + 1);
+						factoria.createTripsService().updateTrip(viaje);
+					} else {
+						seat = new Seat(usuario.getId(), viaje.getId(), "", SeatStatus.EXCLUDED);
+						factoria.createSeatsService().saveSeat(seat);
+					}
 				}
 
-			}else{
+			} else {
 				resultado = "FRACASO";
 				FacesContext
-				.getCurrentInstance()
-				.addMessage(
-						"botonCancelarSolicitud",
-						new FacesMessage(
-								"El plazo para cancelar solicitudes de éste viaje esta cerrado"));
+						.getCurrentInstance()
+						.addMessage(
+								"botonCancelarSolicitud",
+								new FacesMessage(
+										"El plazo para cancelar solicitudes de éste viaje esta cerrado"));
 			}
 
 		} catch (NotPersistedException e) {
 			resultado = "FRACASO";
 			FacesContext
-			.getCurrentInstance()
-			.addMessage(
-					"botonCancelarSolicitud",
-					new FacesMessage(
-							"Error al cancelar la solicitud, consulte con el administrador"));
+					.getCurrentInstance()
+					.addMessage(
+							"botonCancelarSolicitud",
+							new FacesMessage(
+									"Error al cancelar la solicitud, consulte con el administrador"));
+		} catch (AlreadyPersistedException e) {
+			resultado = "FRACASO";
+			FacesContext
+					.getCurrentInstance()
+					.addMessage(
+							"botonCancelarSolicitud",
+							new FacesMessage(
+									"La plaza ya existe"));
 		}
 
 		return resultado;
-	}
+	}*/
 }

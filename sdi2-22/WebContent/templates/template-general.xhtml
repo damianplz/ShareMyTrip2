@@ -7,28 +7,36 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <f:view locale="#{settings.locale}">
-	<h:head>
-		<title>#{msgs.tituloHead}</title>
-	</h:head>
-	<h:body>
-		<h:form id="form-cabecera">
-			<center>
-				<h1>#{msgs.tituloAplicacion1}</h1>
-				<br /> <br />
-				<h2>#{msgs.tituloAplicacion2}</h2>
-				<h:outputLabel value="#{msgs.saludoAUsuario} 
-				#{sessionScope['LOGGEDIN_USER'].login }" rendered="#{login.validado}" /> 
-			</center>
-			<br />
-			<table border="5" align="center">
-				<tr>
-					<th class="title"><ui:insert name="titulo">#{msgs.tituloDefectoCabecera}</ui:insert>
-					</th>
-				</tr>
-			</table>
+	<p:panel>
+		<h:head>
+			<title>#{msgs.tituloHead}</title>
+		</h:head>
+	</p:panel>
 
-			<ui:include src="/snippets/menu-conopciones.xhtml" />
-		</h:form>
+	<h:body>
+		<p:panel>
+			<h:form id="form-cabecera">
+				<center>
+					<h1>#{msgs.tituloAplicacion1}</h1>
+					<br /> <br />
+					<h2>#{msgs.tituloAplicacion2}</h2>
+					<h:outputLabel
+						value="#{msgs.saludoAUsuario} 
+				#{sessionScope['LOGGEDIN_USER'].login }"
+						rendered="#{login.validado}" />
+				</center>
+				<br />
+				<table border="5" align="center">
+					<tr>
+						<th class="title"><ui:insert name="titulo">#{msgs.tituloDefectoCabecera}</ui:insert>
+						</th>
+					</tr>
+				</table>
+
+				<ui:include src="/snippets/menu-conopciones.xhtml" />
+			</h:form>
+		</p:panel>
+
 		<h:form id="form-cuerpo">
 			<ui:insert name="cuerpo">#{msgs.tituloDefectoCuerpo}</ui:insert>
 		</h:form>

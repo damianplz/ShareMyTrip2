@@ -38,6 +38,8 @@ public class BeanViaje extends Trip implements Serializable {
 	private String zipCodeD;
 	private String stateD;
 	private String countryD;
+	
+	Long auxId;
 
 	public String getAddressA() {
 		addressA = this.getDestination().getAddress();
@@ -242,6 +244,8 @@ public class BeanViaje extends Trip implements Serializable {
     
     @ManagedProperty("#{comunidades}")
     private BeanComunidades serviceC;
+
+
      
  
     public String getOption() {
@@ -271,16 +275,5 @@ public class BeanViaje extends Trip implements Serializable {
 	public void setService(BeanProvincias service) {
         this.service = service;
     }
-	
-	public String actualizar(){
-		String resultado = "exito";
-		try {
-			Factories.services.createTripsService().updateTrip(this);
-		} catch (NotPersistedException e) {
-			e.printStackTrace();
-			resultado = "fracaso";
-		}
-		return resultado;
-	}
 
 }
