@@ -142,7 +142,7 @@
 		<display-name>editarViaje.xhtml</display-name>
 		<from-view-id>/restricted/editarViaje.xhtml</from-view-id>
 		<navigation-case>
-			<from-action>#{viaje.actualizar}</from-action>
+			<from-action>#{viajes.actualizar(viaje)}</from-action>
 			<from-outcome>exito</from-outcome>
 			<to-view-id>/restricted/perfil.xhtml</to-view-id>
 		</navigation-case>

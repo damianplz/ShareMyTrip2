@@ -15,32 +15,32 @@
 				<p:column>
 					<f:facet name="header">#{msgs.solicitudNombre}</f:facet>#{app.userId}</p:column>
 				<p:column>
-				<f:facet name="header">#{msgs.verPerfil}</f:facet>
+					<f:facet name="header">#{msgs.verPerfil}</f:facet>
 					<p:commandButton id="botonPerfil" value="#{msgs.botonVerPerfil}"
-						action="#{controller.cargar(app)}"/>
+						action="#{controller.cargar(app)}" />
 					<p:messages for="botonVerPerfil" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">#{msgs.solicitudesConfirmarSolicitud}</f:facet>
-					<p:commandButton id="botonConfirmar"
-						value="#{msgs.botonConfirmarSolicitud}"
-						action="#{solicitudes.confirmar(app)}"  update="tablaSolicitudes" />
+					<p:commandButton id="botonConfirmar" process="@form"
+						update="tablaSolicitudes" value="#{msgs.botonConfirmarSolicitud}"
+						action="#{solicitudes.confirmar(app)}" />
 					<p:messages for="botonConfirmarSolicitar" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">#{msgs.solicitudesCancelarSolicitud}</f:facet>
-					<p:commandButton id="botonCancelar"
-						value="#{msgs.botonCancelarSolicitar}"
-						action="#{solicitudes.cancelar(app)}" update="tablaSolicitudes"/>
+					<p:commandButton id="botonCancelar" process="@form"
+						update="tablaSolicitudes" value="#{msgs.botonCancelarSolicitar}"
+						action="#{solicitudes.cancelar(app)}" />
 					<p:messages for="botonCancelarSolicitar" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">#{msgs.solicitudesEstadoSolicitud}</f:facet>
-					<h:outputText value="#{solicitudes.state(app)}"/>
+					<h:outputText value="#{solicitudes.state(app)}" />
 					<p:messages for="estadoSolicitud" />
 				</p:column>
 			</p:dataTable>
-		</h:form >
+		</h:form>
 	</ui:define>
 	<ui:define name="pie">
 		<ui:include src="/snippets/pie-casa.xhtml" />
