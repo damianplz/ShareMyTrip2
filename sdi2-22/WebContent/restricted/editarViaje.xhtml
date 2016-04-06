@@ -177,7 +177,7 @@
 				</h:panelGroup>
 				<h:panelGroup>
 					<p:commandButton id="actE" value="#{msgs.botonActualizar}"
-						action="#{viajes.actualizar(viaje)}"  update="editarviaje" process="@form" />
+						action="#{viajes.actualizar(viaje)}"  update="@all" process="@all" />
 					<p:commandButton value="#{msgs.botonVolver}"
 						onclick="window.history.back();" immediate="true" />
 					<h:message for="actE" />
