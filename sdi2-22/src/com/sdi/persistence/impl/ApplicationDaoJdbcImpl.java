@@ -81,5 +81,11 @@ public class ApplicationDaoJdbcImpl implements ApplicationDao {
 				tripId
 			);
 	}
+	
+	@Override
+	public int deleteTestApplications(){
+		return jdbcTemplate.execute("APPLICATION_DELETE_TEST");
+	}
+	
 
 }

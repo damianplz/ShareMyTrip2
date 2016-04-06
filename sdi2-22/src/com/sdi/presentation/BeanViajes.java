@@ -264,6 +264,7 @@ public class BeanViajes implements Serializable {
 			viaje.setId(auxId);
 			Factories.services.createTripsService().updateTrip(viaje);
 		} catch (NotPersistedException e) {
+
 			Log.error("Error al actualizar el viaje con id[%d]",viaje.getId());
 			resultado = "fracaso";
 		}

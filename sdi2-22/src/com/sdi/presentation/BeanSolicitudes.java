@@ -239,7 +239,9 @@ public class BeanSolicitudes implements Serializable {
 						viaje.setAvailablePax(viaje.getAvailablePax() + 1);
 						plaza.setStatus(SeatStatus.EXCLUDED);
 						factoria.createSeatsService().updateSeat(plaza);
+
 						Log.info("Se ha creado una nueva plaza con estado [%s]",plaza.getStatus().name());
+
 					} else {
 						factoria.createSeatsService().saveSeat(
 								new Seat(usuario.getId(), viaje.getId(), "",
@@ -335,6 +337,7 @@ public class BeanSolicitudes implements Serializable {
 		return !existe;
 	}
 
+
 	/*
 	 * public String cancelarSolicitud(Trip viaje) { String resultado = "exito";
 	 * ServicesFactory factoria; User usuario; Application app; Seat seat; try {
@@ -369,4 +372,5 @@ public class BeanSolicitudes implements Serializable {
 	 * 
 	 * return resultado; }
 	 */
+
 }

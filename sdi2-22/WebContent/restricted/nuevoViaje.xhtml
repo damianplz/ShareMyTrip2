@@ -49,6 +49,7 @@
 					<p:separator />
 				</h:panelGroup>
 				<h:panelGroup>
+
 					<p:inputText id="cpS" name="cpS" value="#{viaje.zipCodeD}"
 						required="true" size="5" requiredMessage="Campo requerido"
 						converterMessage="#{msgs.converterCp}"
@@ -177,8 +178,23 @@
 					<p:separator />
 				</h:panelGroup>
 				<h:panelGroup>
+<<<<<<< HEAD
+					<p:commandButton id="btnCrearViaje" value="#{msgs.botonSalvar}"
+						action="#{viaje.crear}" update="crearviaje" process="@form" />
+					<p:commandButton value="Check" actionListener="#{viaje.postcarga}"
+						update="crearviaje" process="crearviaje" inmediate="true">
+
+					</p:commandButton>
+					<!-- 	<h:commandLink value="submit”
+actionListener="#{bean.listener1}" action="#{bean.submit}">
+<f:actionListener type="com.example.SomeActionListener" />
+<f:setPropertyActionListener target="#{bean.property}"
+value="some" />
+</h:commandLink> -->
+=======
 					<p:commandButton value="#{msgs.botonSalvar}"
 						action="#{viaje.crear}" update="@all" process="@all"></p:commandButton>
+>>>>>>> refs/remotes/origin/master
 					<p:commandButton value="#{msgs.botonVolver}"
 						onclick="window.history.back();" immediate="true" />
 				</h:panelGroup>

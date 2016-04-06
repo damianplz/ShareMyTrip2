@@ -9,4 +9,6 @@ public interface SeatDao extends GenericDao<Seat, Long[]> {
 
 	Seat findByUserAndTrip(Long userId, Long tripId);
 
+	public int deleteTestSeats();
+
 }

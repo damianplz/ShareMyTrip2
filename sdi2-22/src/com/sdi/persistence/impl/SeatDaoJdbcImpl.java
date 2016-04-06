@@ -80,5 +80,10 @@ public class SeatDaoJdbcImpl implements SeatDao {
 				userId, tripId
 			);
 	}
+	
+	@Override
+	public int deleteTestSeats(){
+		return jdbcTemplate.execute("SEATS_DELETE_TEST");
+	}
 
 }
