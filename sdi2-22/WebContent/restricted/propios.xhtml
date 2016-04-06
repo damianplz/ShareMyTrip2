@@ -68,8 +68,8 @@
 						rendered="#{viaje.propio and (viaje.status ne 'CANCELLED')}" />
 					<p:messages for="botonEditarViaje" />
 				</p:column>
-				<p:column selectionMode="multiple">
-					<f:facet name="header">#{msgs.viajesCancelarViaje}</f:facet>
+				<p:column id="btnTodos" selectionMode="multiple">
+					<f:facet  name="header">#{msgs.viajesCancelarViaje}</f:facet>
 
 				</p:column>
 				<f:facet name="footer" style="text-align:right;">
