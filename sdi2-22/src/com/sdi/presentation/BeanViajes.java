@@ -14,6 +14,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import alb.util.log.Log;
+
 import com.sdi.business.ServicesFactory;
 import com.sdi.infrastructure.Factories;
 import com.sdi.model.Application;
@@ -81,8 +83,10 @@ public class BeanViajes implements Serializable {
 						viajesValidos.add(tr);
 
 			viajes = viajesValidos;
+			Log.debug("Obtenida lista de viajes conteniendo [%d] viajes", viajes.size());
 		} catch (NotPersistedException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			Log.error("Algo ha ocurrido obteniendo lista de viajes");
 			resultado = "fracaso";
 		}
 		return resultado;
@@ -114,9 +118,10 @@ public class BeanViajes implements Serializable {
 					aux.add(t);
 
 		} catch (NotPersistedException e) {
-			System.out.println("El usuario no es solicitante de ningún viaje");
+			Log.error("Algo ha ocurrido obteniendo los viajes en los que el usuario está involucrado");
 		} finally {
 			setViajes(aux);
+			Log.debug("Obtenida lista de viajes del usuario conteniendo [%d] viajes", aux.size());
 		}
 		return resultado;
 
@@ -143,6 +148,7 @@ public class BeanViajes implements Serializable {
 			}
 			filasAux = filas;
 		}
+		Log.debug("Obtenida lista de viajes disponibles conteniendo [%d] viajes", viajesDisponibles.size());
 
 		return viajesDisponibles;
 	}
@@ -211,9 +217,10 @@ public class BeanViajes implements Serializable {
 				}
 			}
 		} catch (NotPersistedException e) {
+			Log.error("Ha ocurrido un error al cancelar viajes");
 			resultado = "fracaso";
-			e.printStackTrace();
 		}
+		Log.debug("Viajes cancelados con éxito");
 		misViajes();
 		return resultado;
 	}
@@ -250,9 +257,10 @@ public class BeanViajes implements Serializable {
 			viaje.setId(auxId);
 			Factories.services.createTripsService().updateTrip(viaje);
 		} catch (NotPersistedException e) {
-			e.printStackTrace();
+			Log.error("Error al actualizar el viaje con id[%d]",viaje.getId());
 			resultado = "fracaso";
 		}
+		Log.debug("Se ha actualizado el viaje [%d] correctamente",viaje.getId());
 		return resultado;
 	}
 
@@ -295,6 +303,7 @@ public class BeanViajes implements Serializable {
 								"botonCancelarSolicitud",
 								new FacesMessage(
 										"El plazo para cancelar solicitudes de éste viaje esta cerrado"));
+				Log.debug("El plazo para cancelar solicitudes en el viaje [%d] está cerrado",viaje.getId());
 			}
 
 		} catch (NotPersistedException e) {
@@ -305,11 +314,13 @@ public class BeanViajes implements Serializable {
 							"botonCancelarSolicitud",
 							new FacesMessage(
 									"Error al cancelar la solicitud, consulte con el administrador"));
+			Log.error("Error al cancelar una solicitud en el viaje [%d]",viaje.getId());
 		} catch (AlreadyPersistedException e) {
 			resultado = "FRACASO";
 			FacesContext.getCurrentInstance().addMessage(
 					"botonCancelarSolicitud",
 					new FacesMessage("La plaza ya existe"));
+			Log.error("Error al cancelar una solicitud en el viaje [%d], la plaza ya existe",viaje.getId());
 		}
 		misViajes();
 		return resultado;

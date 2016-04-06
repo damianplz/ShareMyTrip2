@@ -12,6 +12,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.xml.bind.ValidationException;
 
+import alb.util.log.Log;
+
 import com.sdi.business.UserService;
 import com.sdi.infrastructure.Factories;
 import com.sdi.model.Application;
@@ -69,7 +71,9 @@ public class BeanUsers implements Serializable {
 		} catch (AlreadyPersistedException e) {
 			resultado = "error";
 			FacesContext.getCurrentInstance().addMessage("registroForm",new FacesMessage(e.getMessage()));	
+			Log.error("Error al registrar un nuevo usuario");
 		}
+		Log.debug("Usuario [%s] creado con éxito",user.getLogin());
 		return resultado;
 	}
 
@@ -90,6 +94,7 @@ public class BeanUsers implements Serializable {
 			setPerfil(us.finById(app.getUserId()));
 		} catch (NotPersistedException e) {
 			resultado="fracaso";
+			Log.error("Error al cargar el perfil del usuario a partir de la solicitud [%d],[%d]",app.getUserId(),app.getTripId());
 			FacesContext
 			.getCurrentInstance()
 			.addMessage(
@@ -97,6 +102,7 @@ public class BeanUsers implements Serializable {
 					new FacesMessage(
 							"No se puede cargar el perfil del usuario"));
 		}
+		Log.debug("Se ha cargado el perfil del usuario a partir de la solicitud [%d],[%d]",app.getUserId(),app.getTripId());
 		return resultado;
 	}
 

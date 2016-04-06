@@ -9,6 +9,8 @@ import javax.faces.bean.*;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
+import alb.util.log.Log;
+
 import com.sdi.business.ApplicationService;
 import com.sdi.business.ServicesFactory;
 import com.sdi.business.TripService;
@@ -71,8 +73,12 @@ public class BeanSolicitudes implements Serializable {
 									viaje.getId());
 							as.saveApplication(app);
 							System.out.println("Se ha creado una solicitud");
+							Log.debug(
+									"Se ha creado una solicitud para el usuario [%d], viaje [%d]",
+									getUserId(), viaje.getId());
 						} else {
 							resultado = "error";
+							Log.debug("Error, solicitud fuera de plazo");
 							FacesContext
 									.getCurrentInstance()
 									.addMessage(
@@ -82,6 +88,7 @@ public class BeanSolicitudes implements Serializable {
 						}
 					} else {
 						resultado = "error";
+						Log.debug("Error, solicitud viaje siendo promotor");
 						FacesContext
 								.getCurrentInstance()
 								.addMessage(
@@ -91,6 +98,7 @@ public class BeanSolicitudes implements Serializable {
 					}
 				} else {
 					resultado = "error";
+					Log.debug("Error, ya tiene plaza en el viaje");
 					FacesContext.getCurrentInstance().addMessage(
 							"formTodos",
 							new FacesMessage(
@@ -99,6 +107,7 @@ public class BeanSolicitudes implements Serializable {
 
 			} else {
 				resultado = "error";
+				Log.debug("Error, no quedan plazas en el viaje");
 				FacesContext.getCurrentInstance().addMessage(
 						"formTodos",
 						new FacesMessage(
@@ -106,10 +115,11 @@ public class BeanSolicitudes implements Serializable {
 			}
 		} catch (AlreadyPersistedException e) {
 			resultado = "error";
+			Log.error("Error, ya tiene plaza en el viaje");
 			FacesContext.getCurrentInstance().addMessage("formTodos",
 					new FacesMessage("Ya ha solicitado plaza en éste viaje"));
 		} catch (NotPersistedException er) {
-			er.printStackTrace();
+			Log.error("Error al solicitar plaza");
 			resultado = "fracaso";
 		}
 		return resultado;
@@ -123,9 +133,11 @@ public class BeanSolicitudes implements Serializable {
 			setApplications(as.findByTrip(viaje.getId()));
 		} catch (NotPersistedException e) {
 			resultado = "fracaso";
+			Log.error("Error al cargar solicitudes para el viaje [%d]",viaje.getId());
 			FacesMessage message = new FacesMessage(e.getMessage());
 			throw new ValidatorException(message);
 		}
+		Log.info("Solicitudes cargadas para el viaje [%d]",viaje.getId());
 		return resultado;
 	}
 
@@ -154,7 +166,9 @@ public class BeanSolicitudes implements Serializable {
 											"", SeatStatus.ACCEPTED));
 							factoria.createApplicationsService()
 									.deleteApplication(app);
+							Log.info("Solicitud para el viaje [%d] y usuario [%s] confirmada",viaje.getId(),usuario.getLogin());
 						} else {
+							Log.debug("Error, el usuario ya tiene plaza");
 							resultado = "fracaso";
 							FacesContext
 									.getCurrentInstance()
@@ -166,6 +180,7 @@ public class BeanSolicitudes implements Serializable {
 
 					} else {
 						resultado = "fracaso";
+						Log.debug("Error, el plazo para aceptar plazas ha sido cerrado");
 						FacesContext
 								.getCurrentInstance()
 								.addMessage(
@@ -175,6 +190,7 @@ public class BeanSolicitudes implements Serializable {
 					}
 				} else {
 					resultado = "fracaso";
+					Log.debug("Error, no hay plazas libres");
 					FacesContext.getCurrentInstance().addMessage(
 							"formSolicitudes",
 							new FacesMessage(
@@ -182,6 +198,7 @@ public class BeanSolicitudes implements Serializable {
 				}
 			} else {
 				resultado = "fracaso";
+				Log.debug("Error, no se puede confirmar la solicitud");
 				FacesContext
 						.getCurrentInstance()
 						.addMessage(
@@ -191,6 +208,7 @@ public class BeanSolicitudes implements Serializable {
 			}
 		} catch (Exception e) {
 			resultado = "fracaso";
+			Log.debug("Error al confirmar la solicitud");
 			FacesContext
 					.getCurrentInstance()
 					.addMessage(
@@ -221,15 +239,19 @@ public class BeanSolicitudes implements Serializable {
 						viaje.setAvailablePax(viaje.getAvailablePax() + 1);
 						plaza.setStatus(SeatStatus.EXCLUDED);
 						factoria.createSeatsService().updateSeat(plaza);
+						Log.info("Se ha creado una nueva plaza con estado [%s]",plaza.getStatus().name());
 					} else {
 						factoria.createSeatsService().saveSeat(
 								new Seat(usuario.getId(), viaje.getId(), "",
 										SeatStatus.EXCLUDED));
+						Log.info("Se ha actualizado la plaza al estado [%s]",SeatStatus.EXCLUDED.name());
 					}
 					factoria.createTripsService().updateTrip(viaje);
 					factoria.createApplicationsService().deleteApplication(app);
+					Log.info("Se ha eliminado la solicitud");
 				} else {
 					resultado = "fracaso";
+					Log.debug("La fecha para cancelar solicitudes ha finalizado");
 					FacesContext
 							.getCurrentInstance()
 							.addMessage(
@@ -240,6 +262,7 @@ public class BeanSolicitudes implements Serializable {
 
 			} else {
 				resultado = "fracaso";
+				Log.debug("La solicitud ya ha sido tratada");
 				FacesContext
 						.getCurrentInstance()
 						.addMessage(
@@ -250,6 +273,7 @@ public class BeanSolicitudes implements Serializable {
 
 		} catch (Exception e) {
 			resultado = "fracaso";
+			Log.debug("Error al denegar la solicitud");
 			FacesContext
 					.getCurrentInstance()
 					.addMessage(
@@ -275,7 +299,9 @@ public class BeanSolicitudes implements Serializable {
 				state = "SIN PLAZA";
 			else
 				state = seat.getStatus().name();
+			Log.info("La solicitud pasa al estadlo [%s]",state);
 		} catch (NotPersistedException e) {
+			Log.error("La solicitud no se ha podido encontrar");
 			FacesContext
 					.getCurrentInstance()
 					.addMessage(
@@ -301,7 +327,7 @@ public class BeanSolicitudes implements Serializable {
 					app.getUserId(), app.getTripId()) == null)
 				existe = false;
 		} catch (NotPersistedException e) {
-			e.printStackTrace();
+			Log.error("La solicitud no existe");
 			existe = false;
 
 		}
@@ -309,64 +335,38 @@ public class BeanSolicitudes implements Serializable {
 		return !existe;
 	}
 
-	/*public String cancelarSolicitud(Trip viaje) {
-		String resultado = "exito";
-		ServicesFactory factoria;
-		User usuario;
-		Application app;
-		Seat seat;
-		try {
-			factoria = Factories.services;
-			usuario = (User) FacesContext.getCurrentInstance()
-					.getExternalContext().getSessionMap().get("LOGGEDIN_USER");
-			usuario = factoria.createUsersService().finById(usuario.getId());
-			viaje = factoria.createTripsService().findById(viaje.getId());
-			seat = factoria.createSeatsService().findByUserAndSeat(
-					usuario.getId(), viaje.getId());
-			if (viaje.getClosingDate().after(new Date())) {
-				app = Factories.services.createApplicationsService().findById(
-						usuario.getId(), viaje.getId());
-				if (app != null) {
-					factoria.createApplicationsService().deleteApplication(app);
-					if (seat != null) {
-						seat.setStatus(SeatStatus.EXCLUDED);
-						factoria.createSeatsService().updateSeat(seat);
-						viaje.setAvailablePax(viaje.getAvailablePax() + 1);
-						factoria.createTripsService().updateTrip(viaje);
-					} else {
-						seat = new Seat(usuario.getId(), viaje.getId(), "", SeatStatus.EXCLUDED);
-						factoria.createSeatsService().saveSeat(seat);
-					}
-				}
-
-			} else {
-				resultado = "FRACASO";
-				FacesContext
-						.getCurrentInstance()
-						.addMessage(
-								"botonCancelarSolicitud",
-								new FacesMessage(
-										"El plazo para cancelar solicitudes de éste viaje esta cerrado"));
-			}
-
-		} catch (NotPersistedException e) {
-			resultado = "FRACASO";
-			FacesContext
-					.getCurrentInstance()
-					.addMessage(
-							"botonCancelarSolicitud",
-							new FacesMessage(
-									"Error al cancelar la solicitud, consulte con el administrador"));
-		} catch (AlreadyPersistedException e) {
-			resultado = "FRACASO";
-			FacesContext
-					.getCurrentInstance()
-					.addMessage(
-							"botonCancelarSolicitud",
-							new FacesMessage(
-									"La plaza ya existe"));
-		}
-
-		return resultado;
-	}*/
+	/*
+	 * public String cancelarSolicitud(Trip viaje) { String resultado = "exito";
+	 * ServicesFactory factoria; User usuario; Application app; Seat seat; try {
+	 * factoria = Factories.services; usuario = (User)
+	 * FacesContext.getCurrentInstance()
+	 * .getExternalContext().getSessionMap().get("LOGGEDIN_USER"); usuario =
+	 * factoria.createUsersService().finById(usuario.getId()); viaje =
+	 * factoria.createTripsService().findById(viaje.getId()); seat =
+	 * factoria.createSeatsService().findByUserAndSeat( usuario.getId(),
+	 * viaje.getId()); if (viaje.getClosingDate().after(new Date())) { app =
+	 * Factories.services.createApplicationsService().findById( usuario.getId(),
+	 * viaje.getId()); if (app != null) {
+	 * factoria.createApplicationsService().deleteApplication(app); if (seat !=
+	 * null) { seat.setStatus(SeatStatus.EXCLUDED);
+	 * factoria.createSeatsService().updateSeat(seat);
+	 * viaje.setAvailablePax(viaje.getAvailablePax() + 1);
+	 * factoria.createTripsService().updateTrip(viaje); } else { seat = new
+	 * Seat(usuario.getId(), viaje.getId(), "", SeatStatus.EXCLUDED);
+	 * factoria.createSeatsService().saveSeat(seat); } }
+	 * 
+	 * } else { resultado = "FRACASO"; FacesContext .getCurrentInstance()
+	 * .addMessage( "botonCancelarSolicitud", new FacesMessage(
+	 * "El plazo para cancelar solicitudes de éste viaje esta cerrado")); }
+	 * 
+	 * } catch (NotPersistedException e) { resultado = "FRACASO"; FacesContext
+	 * .getCurrentInstance() .addMessage( "botonCancelarSolicitud", new
+	 * FacesMessage(
+	 * "Error al cancelar la solicitud, consulte con el administrador")); }
+	 * catch (AlreadyPersistedException e) { resultado = "FRACASO"; FacesContext
+	 * .getCurrentInstance() .addMessage( "botonCancelarSolicitud", new
+	 * FacesMessage( "La plaza ya existe")); }
+	 * 
+	 * return resultado; }
+	 */
 }
