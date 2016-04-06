@@ -6,14 +6,14 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
 	template="/templates/template-general.xhtml">
-	<ui:define name="titulo">#{msgs.tituloPerfil}</ui:define>
+	<ui:define name="titulo">#{msgs.tituloRegistroViaje}</ui:define>
 	<ui:define name="cuerpo">
 		<h:form id="crearviaje">
 			<p:panelGrid id="viajeSalida" columns="1" cellpadding="5">
 				<h:panelGroup>
 					<p:inputText id="calleS" value="#{viaje.addressD}" required="true"
 						requiredMessage="#{msgs.requiredCalleSalida}">#{msgs.formCrearViajeCalleSalida}</p:inputText>
-					<h:message for="calleS" />
+					<p:message for="calleS" />
 					<p:separator />
 				</h:panelGroup>
 
@@ -45,18 +45,18 @@
 				<h:panelGroup>
 					<p:inputText id="paisS" value="#{viaje.countryD}" required="true"
 						requiredMessage="#{msgs.requiredPaisSalida}">#{msgs.formCrearViajePaisSalida}</p:inputText>
-					<h:message for="paisS" />
+					<p:message for="paisS" />
 					<p:separator />
 				</h:panelGroup>
 				<h:panelGroup>
-					<p:inputText id="cpS" value="#{viaje.zipCodeD}" required="true"
-						size="5" requiredMessage="#{msgs.requiredCpSalida}"
+					<p:inputText id="cpS" name="cpS" value="#{viaje.zipCodeD}"
+						required="true" size="5" requiredMessage="Campo requerido"
 						converterMessage="#{msgs.converterCp}"
 						validatorMessage="#{msgs.converterCp}">#{msgs.formCrearViajeCodigoPostalSalida}		
 					<f:convertNumber type="number" />
 						<f:validateLength minimum="5" maximum="5" />
 					</p:inputText>
-					<h:message for="cpS" />
+					<p:message for="cpS"></p:message>
 					<p:separator />
 				</h:panelGroup>
 				<h:panelGroup>
@@ -65,15 +65,16 @@
 						converterMessage="#{msgs.converterFecha}">#{msgs.formCrearViajeFechaSalida}
 					<f:convertDateTime type="both" />
 					</p:inputText>
-					<h:message for="fechaS" />
+					<p:message for="fechaS" />
 					<p:separator />
 				</h:panelGroup>
 			</p:panelGrid>
+			<p:messages for="viajeSalida"></p:messages>
 			<p:panelGrid id="viajeLlegada" columns="1" cellpadding="5">
 				<h:panelGroup>
 					<p:inputText id="calleL" value="#{viaje.addressA}" required="true"
 						requiredMessage="#{msgs.requiredCalleLlegada}">#{msgs.formCrearViajeCalleLlegada}</p:inputText>
-					<h:message for="calleL" />
+					<p:message for="calleL" />
 					<p:separator />
 				</h:panelGroup>
 				<h:panelGrid>
@@ -107,7 +108,7 @@
 				<h:panelGroup>
 					<p:inputText id="paisL" value="#{viaje.countryA}" required="true"
 						requiredMessage="#{msgs.requiredPaisLlegada}">#{msgs.formCrearViajePaisLlegada}</p:inputText>
-					<h:message for="paisL" />
+					<p:message for="paisL" />
 					<p:separator />
 				</h:panelGroup>
 				<h:panelGroup>
@@ -118,7 +119,7 @@
 					<f:convertNumber type="number" />
 						<f:validateLength minimum="5" maximum="5" />
 					</p:inputText>
-					<h:message for="cpL" />
+					<p:message for="cpL" />
 					<p:separator />
 				</h:panelGroup>
 				<h:panelGroup>
@@ -127,7 +128,7 @@
 						converterMessage="#{msgs.converterFecha}">#{msgs.formCrearViajeFechaLlegada}
 					<f:convertDateTime type="both" />
 					</p:inputText>
-					<h:message for="fechaL" />
+					<p:message for="fechaL" />
 					<p:separator />
 				</h:panelGroup>
 			</p:panelGrid>
@@ -138,7 +139,7 @@
 						converterMessage="#{msgs.converterFecha}">#{msgs.formCrearViajeFechaLimite}
 					<f:convertDateTime type="both" />
 					</p:inputText>
-					<h:message for="limite" />
+					<p:message for="limite" />
 					<p:separator />
 				</h:panelGroup>
 				<h:panelGroup>
@@ -148,7 +149,7 @@
 						<f:convertNumber type="number" maxFractionDigits="2"></f:convertNumber>
 					</p:inputText>
 					<p:separator />
-					<h:message for="coste" />
+					<p:message for="coste" />
 				</h:panelGroup>
 				<h:panelGroup>
 					<p:inputText id="comment" value="#{viaje.comments}">#{msgs.formCrearViajeComentarios}</p:inputText>
@@ -161,7 +162,7 @@
 							type="number" />
 					</p:inputText>
 
-					<h:message for="paxM" />
+					<p:message for="paxM" />
 					<p:separator />
 				</h:panelGroup>
 				<h:panelGroup>
@@ -172,16 +173,12 @@
 							type="number" />
 					</p:inputText>
 
-					<h:message for="paxA" />
+					<p:message for="paxA" />
 					<p:separator />
 				</h:panelGroup>
 				<h:panelGroup>
 					<p:commandButton value="#{msgs.botonSalvar}"
-						action="#{viaje.crear}" update="crearviaje" process="@form" />
-					<p:commandButton value="Check" actionListener="#{viaje.postcarga}"
-						update="crearviaje" process="crearviaje" inmediate="true">
-
-					</p:commandButton>
+						action="#{viaje.crear}" update="@all" process="@all"></p:commandButton>
 					<p:commandButton value="#{msgs.botonVolver}"
 						onclick="window.history.back();" immediate="true" />
 				</h:panelGroup>

@@ -165,5 +165,10 @@ public class TripDaoJdbcImpl implements TripDao {
 				new TripMapper(),
 				id, arrivalDate);
 	}
+	
+	@Override
+	public int  deleteTestTrips(){
+		return jdbcTemplate.execute("TRIP_DELETE_TEST_TRIPS");
+	}
 
 }

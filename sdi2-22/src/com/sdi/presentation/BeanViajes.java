@@ -37,7 +37,7 @@ public class BeanViajes implements Serializable {
 
 	private List<Trip> viajes;
 	private List<Trip> viajesDisponibles;
-	private int filas = 5;
+	private int filas = 10;
 	private int filasAux = filas;
 
 	@ManagedProperty(value = "#{viaje}")
@@ -83,7 +83,11 @@ public class BeanViajes implements Serializable {
 						viajesValidos.add(tr);
 
 			viajes = viajesValidos;
+
+			filas=viajesValidos.size();
+
 			Log.debug("Obtenida lista de viajes conteniendo [%d] viajes", viajes.size());
+
 		} catch (NotPersistedException e) {
 			//e.printStackTrace();
 			Log.error("Algo ha ocurrido obteniendo lista de viajes");
@@ -121,7 +125,11 @@ public class BeanViajes implements Serializable {
 			Log.error("Algo ha ocurrido obteniendo los viajes en los que el usuario está involucrado");
 		} finally {
 			setViajes(aux);
+
+			filas=aux.size();
+
 			Log.debug("Obtenida lista de viajes del usuario conteniendo [%d] viajes", aux.size());
+
 		}
 		return resultado;
 

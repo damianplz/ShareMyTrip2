@@ -10,16 +10,16 @@ public class PO_LoginForm {
 	
    public void rellenaFormulario(WebDriver driver, String userName, String passwordUser)
    {
-		WebElement login = driver.findElement(By.id("login-form:user"));
+		WebElement login = driver.findElement(By.id("form-cuerpo:login"));
 		login.click();
 		login.clear();
 		login.sendKeys(userName);
-		WebElement password = driver.findElement(By.id("login-form:pass"));
+		WebElement password = driver.findElement(By.id("form-cuerpo:password"));
 		password.click();
 		password.clear();
 		password.sendKeys(passwordUser);
-		//Pulsar el boton de Alta.
-		By boton = By.id("login-form:log");
+		//Pulsar el boton de Login.
+		By boton = By.id("form-cuerpo:btnLogin");
 		driver.findElement(boton).click();	   
    }
 	

@@ -14,6 +14,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class SeleniumUtils {
 	
+		//Hace Click sobre un boton dado un id
+		static public void clickOnButton(WebDriver driver ,String idButton){
+			WebElement button = driver.findElement(By.id(idButton));
+			button.click();
+		}
+	
 	    //Mueve el ratón a la opción de menú submenu(desplegable). Evento hover
 	    //y clicka la opcion opcionclick
 		static public void ClickSubopcionMenuHover(WebDriver driver, String submenu, String opcionclick)
