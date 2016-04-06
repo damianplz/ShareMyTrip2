@@ -79,7 +79,7 @@ public class BeanViajes implements Serializable {
 			for (Trip tr : viajes)
 				if (tr.getClosingDate().after(Calendar.getInstance().getTime()))
 					if (tr.getAvailablePax() > 0
-							&& tr.getStatus().equals(TripStatus.OPEN))
+							&& !tr.getStatus().equals(TripStatus.CANCELLED))
 						viajesValidos.add(tr);
 
 			viajes = viajesValidos;
@@ -136,8 +136,7 @@ public class BeanViajes implements Serializable {
 			for (Trip trip : viajes) {
 				if (trip.getClosingDate().after(
 						Calendar.getInstance().getTime())) {
-					if (trip.getAvailablePax() > 0
-							&& trip.getStatus().equals(TripStatus.OPEN)) {
+					if (trip.getAvailablePax() > 0) {
 						if (contador < filas) {
 							viajesDisponibles.add(trip);
 							contador++;
@@ -190,7 +189,7 @@ public class BeanViajes implements Serializable {
 	}
 
 	public void onRowUnselect(UnselectEvent event) {
-
+		System.out.println(event.toString());
 		viajes.remove((Trip) event.getObject());
 
 		FacesMessage msg = new FacesMessage("Trip Unselected",
@@ -321,6 +320,8 @@ public class BeanViajes implements Serializable {
 					"botonCancelarSolicitud",
 					new FacesMessage("La plaza ya existe"));
 			Log.error("Error al cancelar una solicitud en el viaje [%d], la plaza ya existe",viaje.getId());
+		} catch(Throwable e){
+			Log.debug("Error grave al cancelar solicitud");
 		}
 		misViajes();
 		return resultado;

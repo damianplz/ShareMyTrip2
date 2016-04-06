@@ -131,13 +131,13 @@ public class BeanSolicitudes implements Serializable {
 		try {
 			as = Factories.services.createApplicationsService();
 			setApplications(as.findByTrip(viaje.getId()));
+			Log.info("Solicitudes cargadas para el viaje [%d]",viaje.getId());
 		} catch (NotPersistedException e) {
 			resultado = "fracaso";
 			Log.error("Error al cargar solicitudes para el viaje [%d]",viaje.getId());
 			FacesMessage message = new FacesMessage(e.getMessage());
 			throw new ValidatorException(message);
-		}
-		Log.info("Solicitudes cargadas para el viaje [%d]",viaje.getId());
+		}	
 		return resultado;
 	}
 

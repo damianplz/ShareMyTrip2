@@ -15,7 +15,7 @@ public class LoggingInitialization implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 
-		String level=arg0.getServletContext().getInitParameter("logLevel");
+		/*String level=arg0.getServletContext().getInitParameter("logLevel");
 		
 		switch(level) {
 			case "OFF": Log.setLogLevel(LogLevel.OFF); break;
@@ -28,7 +28,8 @@ public class LoggingInitialization implements ServletContextListener {
 																  // Este nivel ya no debería estar activado cuando el programa está en producción.
 			case "TRACE": Log.setLogLevel(LogLevel.TRACE); break; // Nivel máximo de detalle de lo que hace la aplicación.
 			case "ALL": Log.setLogLevel(LogLevel.ALL); break;
-		}
+		}*/
+		Log.setLogLevel(LogLevel.DEBUG);
 	}
 
 }
