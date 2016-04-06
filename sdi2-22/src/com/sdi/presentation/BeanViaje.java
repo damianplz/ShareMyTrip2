@@ -12,6 +12,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import alb.util.log.Log;
+
 import com.sdi.infrastructure.Factories;
 import com.sdi.model.AddressPoint;
 import com.sdi.model.Trip;
@@ -143,9 +145,10 @@ public class BeanViaje extends Trip implements Serializable {
 		try {
 			Factories.services.createTripsService().saveTrip(this);
 		} catch (AlreadyPersistedException e) {
-			e.printStackTrace();
+			Log.error("Error al crear un nuevo viaje");
 			resultado = "fracaso";
 		}
+		Log.debug("Viaje creado con exito");
 		return resultado;
 	}
 	

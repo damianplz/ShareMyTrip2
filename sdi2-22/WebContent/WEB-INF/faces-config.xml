@@ -10,7 +10,7 @@
 			<var>msgs</var>
 		</resource-bundle>
 	</application>
-
+	
 	<managed-bean>
 		<managed-bean-name>controller</managed-bean-name>
 		<managed-bean-class>com.sdi.presentation.BeanUsers</managed-bean-class>
