@@ -32,7 +32,7 @@ public class BeanViajes implements Serializable {
 
 	private List<Trip> viajes;
 	private List<Trip> viajesDisponibles;
-	private int filas = 5;
+	private int filas = 10;
 	private int filasAux = filas;
 
 	@ManagedProperty(value = "#{viaje}")
@@ -76,6 +76,7 @@ public class BeanViajes implements Serializable {
 						viajesValidos.add(tr);
 
 			viajes = viajesValidos;
+			filas=viajesValidos.size();
 		} catch (NotPersistedException e) {
 			e.printStackTrace();
 			resultado = "fracaso";
@@ -106,6 +107,7 @@ public class BeanViajes implements Serializable {
 			System.out.println("El usuario no es solicitante de ningún viaje");
 		} finally {
 			setViajes(aux);
+			filas=aux.size();
 		}
 		return resultado;
 
