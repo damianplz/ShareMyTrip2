@@ -186,5 +186,8 @@ public class Trip {
 	public void setPropio(Boolean propio) {
 		this.propio = propio;
 	}
+	
+	public boolean isCancelled(){return status != TripStatus.CANCELLED;}
+
 
 }

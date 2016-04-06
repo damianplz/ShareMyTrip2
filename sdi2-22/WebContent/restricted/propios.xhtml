@@ -8,13 +8,13 @@
 	template="/templates/template-general.xhtml">
 	<ui:define name="titulo">#{msgs.tituloViajesPropios}</ui:define>
 	<ui:define name="cuerpo">
+	
 		<h:form id="formularioPropios">
 			<p:dataTable id="tablaMisViajes" var="viaje" value="#{viajes.viajes}"
 				border="1" emptyMessage="No travels found with given criteria"
 				widgetVar="travelsTable" sortMode="multiple" draggableRows="true"
-				rows="#{viajes.filas}"  selection="#{viajes.viajes}"
+				rows="#{viajes.filas}" selection="#{viajes.viajes}"
 				rowKey="#{viaje.id}">
-
 
 				<f:facet name="header">
 					<h:outputText value="#{msgs.numeroDeFilas}" />
@@ -55,26 +55,27 @@
 				</p:column>
 				<p:column>
 					<f:facet name="header">#{msgs.viajesCancelarSolicitud}</f:facet>
-					<p:commandButton id="botonCancelarSolicitud"
-						value="#{msgs.botonCancelarSolicitar}"
-						action="#{solicitudes.cancelarSolicitud(viaje)}"
-						update="tablaMisViajes" process="@form"
-						rendered="#{viaje.propio==false}" />
+					<p:commandButton id="botonCancelarSolicitud" process="@form"
+						update="tablaMisViajes" value="#{msgs.botonCancelarSolicitar}"
+						action="#{viajes.cancelarSolicitud(viaje)}"
+						rendered="#{viaje.propio==false} " />
 					<p:messages for="botonCancelarSolicitud" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">#{msgs.viajesEditar}</f:facet>
-					<p:commandButton id="botonEditarViaje" value="#{msgs.botonEditarViaje}"
-						action="#{viajes.cargar(viaje)}" rendered="#{viaje.propio}" />
+					<p:commandButton id="botonEditarViaje"
+						value="#{msgs.botonEditarViaje}" action="#{viajes.cargar(viaje)}"
+						rendered="#{viaje.propio and (viaje.status ne 'CANCELLED')}" />
 					<p:messages for="botonEditarViaje" />
 				</p:column>
-				<p:column selectionMode="multiple" >
+				<p:column selectionMode="multiple">
 					<f:facet name="header">#{msgs.viajesCancelarViaje}</f:facet>
-					
+
 				</p:column>
 				<f:facet name="footer" style="text-align:right;">
 					<p:commandButton process="@form" update="tablaMisViajes"
-						value="#{msgs.botonCancelarViajes}" action="#{viajes.cancelarViajes}"/>
+						value="#{msgs.botonCancelarViajes}"
+						action="#{viajes.cancelarViajes}" />
 				</f:facet>
 			</p:dataTable>
 		</h:form>

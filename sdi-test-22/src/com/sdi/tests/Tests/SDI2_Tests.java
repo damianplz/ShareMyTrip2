@@ -55,7 +55,11 @@ public class SDI2_Tests {
 		driver = new FirefoxDriver();
 		driver.get(selectedServer);
 		
+		
+		Factories.persistence.newApplicationDao().deleteTestApplications();
+		Factories.persistence.newSeatDao().deleteTestSeats();
 		Factories.persistence.newTripDao().deleteTestTrips();
+		
 		
 		
 		//Para el uso de los test con plugin
@@ -209,7 +213,7 @@ public class SDI2_Tests {
 	    
 	}
 
-//	// TODO 7. [RegViajeInVal] Registro de un viaje nuevo con datos inválidos.
+//	// 7. [RegViajeInVal] Registro de un viaje nuevo con datos inválidos.
 //	@Test
 //	public void t07_RegViajeInVal() throws InterruptedException {
 //		
@@ -235,7 +239,7 @@ public class SDI2_Tests {
 //	    driver.findElement(By.id("form-cuerpo:crearviaje:paisS")).clear();
 //	    driver.findElement(By.id("form-cuerpo:crearviaje:paisS")).sendKeys("test");
 //	    driver.findElement(By.id("form-cuerpo:crearviaje:cpS")).clear();
-//	    driver.findElement(By.id("form-cuerpo:crearviaje:cpS")).sendKeys("12345");
+//	    driver.findElement(By.id("form-cuerpo:crearviaje:cpS")).sendKeys("1234");
 //	    driver.findElement(By.id("form-cuerpo:crearviaje:fechaS")).clear();
 //	    driver.findElement(By.id("form-cuerpo:crearviaje:fechaS")).sendKeys("30-abr-2016 15:27:36");
 //	    driver.findElement(By.id("form-cuerpo:crearviaje:calleL")).clear();
@@ -269,29 +273,59 @@ public class SDI2_Tests {
 //		
 //	}
 
-//	// 8. [EditViajeVal] Edición de viaje existente con datos válidos.
-//	@Test
-//	public void t08_EditViajeVal() {
-//		// Editamos el viaje de Rue de Percebe cambiando
-//		// el nombre de la ciudad
-//		t03_IdVal();
-//		SeleniumUtils.ClickSubopcionMenuHover(driver, "form-cabecera:opciones",
-//				"form-cabecera:linkMisViajes");
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "tablaViajesParti", 10);
-//		WebElement element = driver
-//				.findElement(By
-//						.xpath("//td[contains(text(),'Sat Oct 15 12:50:00 "
-//								+ "CEST 2016')]/following-sibling::*/"
-//								+ "a[contains(text(),'Modif')]"));
-//		element.click();
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "viaje", 10);
-//		new PO_ModifViajeForm().rellenaFormulario(driver, "20/10/2016",
-//				"23:59", "cityModif", "21/10/2016", "03:05", "12:50",
-//				"15/10/2016");
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "tablaViajesParti", 10);
-//		SeleniumUtils.textoPresentePagina(driver,
-//				"Sat Oct 15 12:50:00 CEST 2016");
-//	}
+	// 8. [EditViajeVal] Edición de viaje existente con datos válidos.
+	@Test
+	public void t08_EditViajeVal() throws Exception {
+		// Editamos el viaje de Rue de Percebe cambiando
+		// el nombre de la ciudad
+		String provinciaSalida="Madrid",provinciaLlegada="Albacete";
+		int dia=30;
+		login();
+		crearViaje(provinciaSalida, provinciaLlegada,dia);
+		
+		//click editar
+	    driver.findElement(By.xpath("//a[@id='form-cuerpo:verPropios']/span")).click();
+	    driver.findElement(By.xpath("//tbody[@id='form-cuerpo:formularioPropios:tablaMisViajes_data']/tr[contains(.,\""+provinciaSalida+"\") and contains(.,\"Promotor\") and contains(.,\"OPEN\")]/td[11]")).click();
+	    
+	    //editarViaje
+	    driver.findElement(By.id("form-cuerpo:editarviaje:calleSE")).clear();
+	    driver.findElement(By.id("form-cuerpo:editarviaje:calleSE")).sendKeys("testEdicion");
+	    driver.findElement(By.xpath("//div[@id='form-cuerpo:editarviaje:listaCiudadesDE']/div[3]/table/tbody//td[text()=\""+provinciaLlegada+"\"]")).click();
+	    driver.findElement(By.xpath("//div[@id='form-cuerpo:editarviaje:listaComunidadesDE']/div[3]/table/tbody/tr[18]/td")).click();
+	    driver.findElement(By.id("form-cuerpo:editarviaje:paisSE")).clear();
+	    driver.findElement(By.id("form-cuerpo:editarviaje:paisSE")).sendKeys("testEdicion");
+	    driver.findElement(By.id("form-cuerpo:editarviaje:cpSE")).clear();
+	    driver.findElement(By.id("form-cuerpo:editarviaje:cpSE")).sendKeys("12345");
+	    driver.findElement(By.id("form-cuerpo:editarviaje:fechaSE")).clear();
+	    driver.findElement(By.id("form-cuerpo:editarviaje:fechaSE")).sendKeys("30-abr-2016 11:27:09");
+	    driver.findElement(By.id("form-cuerpo:editarviaje:calleLE")).clear();
+	    driver.findElement(By.id("form-cuerpo:editarviaje:calleLE")).sendKeys("testEdicion");
+	    driver.findElement(By.xpath("//div[@id='form-cuerpo:editarviaje:listaCiudadesSE']/div[3]/table/tbody//td[text()=\""+provinciaSalida+"\"]")).click();
+	    //driver.findElement(By.id("form-cuerpo:editarviaje:listaCiudadesSE_input")).click();
+	    driver.findElement(By.xpath("//div[@id='form-cuerpo:editarviaje:listaComunidadesAE']/div[3]/table/tbody/tr[18]/td")).click();
+	    driver.findElement(By.id("form-cuerpo:editarviaje:paisLE")).clear();
+	    driver.findElement(By.id("form-cuerpo:editarviaje:paisLE")).sendKeys("testEdicion");
+	    driver.findElement(By.id("form-cuerpo:editarviaje:cpLE")).clear();
+	    driver.findElement(By.id("form-cuerpo:editarviaje:cpLE")).sendKeys("54321");
+	    driver.findElement(By.id("form-cuerpo:editarviaje:fechaLE")).clear();
+	    driver.findElement(By.id("form-cuerpo:editarviaje:fechaLE")).sendKeys("30-abr-2016 11:27:09");
+	    driver.findElement(By.id("form-cuerpo:editarviaje:limiteE")).clear();
+	    driver.findElement(By.id("form-cuerpo:editarviaje:limiteE")).sendKeys("29-abr-2016 11:27:09");
+	    driver.findElement(By.id("form-cuerpo:editarviaje:costeE")).clear();
+	    driver.findElement(By.id("form-cuerpo:editarviaje:costeE")).sendKeys("5");
+	    driver.findElement(By.id("form-cuerpo:editarviaje:commentE")).clear();
+	    driver.findElement(By.id("form-cuerpo:editarviaje:commentE")).sendKeys("test");
+	    driver.findElement(By.id("form-cuerpo:editarviaje:paxME")).clear();
+	    driver.findElement(By.id("form-cuerpo:editarviaje:paxME")).sendKeys("4");
+	    driver.findElement(By.id("form-cuerpo:editarviaje:paxAE")).clear();
+	    driver.findElement(By.id("form-cuerpo:editarviaje:paxAE")).sendKeys("4");
+	    driver.findElement(By.id("form-cuerpo:editarviaje:actE")).click();
+	    
+	    //Comprobacion de los cambios
+	    driver.findElement(By.xpath("//a[@id='form-cuerpo:verPropios']/span")).click();
+	    assertEquals(provinciaLlegada, driver.findElement(By.xpath("//tbody[@id='form-cuerpo:formularioPropios:tablaMisViajes_data']/tr[contains(.,\""+provinciaLlegada+"\") and contains(.,\"Promotor\")]/td[1]")).getText());
+	    assertEquals(provinciaSalida, driver.findElement(By.xpath("//tbody[@id='form-cuerpo:formularioPropios:tablaMisViajes_data']/tr[contains(.,\""+provinciaSalida+"\") and contains(.,\"Promotor\")]/td[2]")).getText());
+	}
 
 //	// 9. [EditViajeInVal] Edición de viaje existente con datos inválidos.
 //	@Test
@@ -373,110 +407,82 @@ public class SDI2_Tests {
 				+ "and contains(.,\""+provinciaDeLlegada2+"\")  and contains(.,\"Promotor\")]/td[7]")).getText());
 	}
 
-//	// 12. [Ins1ViajeAceptVal] Inscribir en un viaje un solo usuario y ser
-//	// admitido por el promotor.
-//	@Test
-//	public void t12_Ins1ViajeAceptVal() {
-//		// Como testSDI solicitamos el viaje 338 (hay margen de sobra de
-//		// tiempo)
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "form-pie", 10);
-//		new PO_LoginForm().rellenaFormulario(driver, "testSDI", "testSDI");
-//		SeleniumUtils
-//				.EsperaCargaPagina(driver, "id", "registradoPrincipal", 10);
-//		SeleniumUtils.ClickSubopcionMenuHover(driver, "form-cabecera:opciones",
-//				"form-cabecera:linkOpciones");
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "tablaViajes", 10);
-//		WebElement element = driver
-//				.findElement(By
-//						.xpath("//td[contains(text(),'338')]/following-sibling::"
-//								+ "*/a[contains(text(),'Solicitar')]"));
-//		element.click();
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "tablaViajesSin", 10);
-//		SeleniumUtils.textoPresentePagina(driver, "338");
-//		SeleniumUtils.ClickSubopcionMenuHover(driver, "form-cabecera:opciones",
-//				"form-cabecera:linkCerrarSesion");
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "login-form", 10);
-//		login("usuario2", "usuario2");
-//		SeleniumUtils.ClickSubopcionMenuHover(driver, "form-cabecera:opciones",
-//				"form-cabecera:linkMisViajes");
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "tablaViajes", 10);
-//		By ver = By
-//				.xpath("//td[contains(text(), 'Calle esmalte, Ponga-España')]"
-//						+ "/following-sibling::*/a[contains"
-//						+ "(@id, 'linkSolicitantes')]");
-//		driver.findElement(ver).click();
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "tablaSolicitantes", 10);
-//
-//		By aceptar = By
-//				.xpath("//td[contains(text(),'320')]/following-sibling::*"
-//						+ "/a[contains(text(),'Aceptar')]");
-//		driver.findElement(aceptar).click();
-//		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "320", 10);
-//
-//	}
-//
-//	// 13. [Ins2ViajeAceptVal] Inscribir en un viaje dos usuarios y ser
-//	// admitidos los dos por el promotor.
-//	@Test
-//	public void t13_Ins2ViajeAceptVal() {
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "form-pie", 10);
-//		new PO_LoginForm().rellenaFormulario(driver, "usuario1", "usuario1");
-//		SeleniumUtils
-//				.EsperaCargaPagina(driver, "id", "registradoPrincipal", 10);
-//		SeleniumUtils.ClickSubopcionMenuHover(driver, "form-cabecera:opciones",
-//				"form-cabecera:linkOpciones");
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "tablaViajes", 10);
-//		WebElement element = driver
-//				.findElement(By
-//						.xpath("//td[contains(text(),'343')]/following-sibling::"
-//								+ "*/a[contains(text(),'Solicitar')]"));
-//		element.click();
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "tablaViajesSin", 10);
-//		SeleniumUtils.textoPresentePagina(driver, "343");
-//		SeleniumUtils.ClickSubopcionMenuHover(driver, "form-cabecera:opciones",
-//				"form-cabecera:linkCerrarSesion");
-//		login("usuario2", "usuario2");
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "registradoPrincipal", 10);
-//		SeleniumUtils.ClickSubopcionMenuHover(driver, "form-cabecera:opciones",
-//				"form-cabecera:linkOpciones");
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "tablaViajes", 10);
-//		WebElement element2 = driver
-//				.findElement(By
-//						.xpath("//td[contains(text(),'343')]/following-sibling::"
-//								+ "*/a[contains(text(),'Solicitar')]"));
-//		element2.click();
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "tablaViajesSin", 10);
-//		SeleniumUtils.textoPresentePagina(driver, "343");
-//		SeleniumUtils.ClickSubopcionMenuHover(driver, "form-cabecera:opciones",
-//				"form-cabecera:linkCerrarSesion");
-//
-//		// Aceptar
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "form-pie", 10);
-//		login("usuario3", "usuario3");
-//		SeleniumUtils
-//				.EsperaCargaPagina(driver, "id", "registradoPrincipal", 10);
-//		SeleniumUtils.ClickSubopcionMenuHover(driver, "form-cabecera:opciones",
-//				"form-cabecera:linkMisViajes");
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "tablaViajes", 10);
-//		By ver = By
-//				.xpath(".//a[contains(text(),'343')]/../following-sibling::*/a"
-//						+ "[contains(@id,'linkSolicitantes')]");
-//		driver.findElement(ver).click();
-//		SeleniumUtils.EsperaCargaPagina(driver, "id", "tablaSolicitantes", 10);
-//
-//		By aceptar = By
-//				.xpath("//td[contains(text(),'317')]/following-sibling::*/"
-//						+ "a[contains(text(),'Aceptar')]");
-//		driver.findElement(aceptar).click();
-//		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "317", 10);
-//
-//		By aceptar2 = By
-//				.xpath("//td[contains(text(),'318')]/following-sibling::*/a"
-//						+ "[contains(text(),'Aceptar')]");
-//		driver.findElement(aceptar2).click();
-//		SeleniumUtils.EsperaCargaPaginaNoTexto(driver, "318", 10);
-//
-//	}
+	// 12. [Ins1ViajeAceptVal] Inscribir en un viaje un solo usuario y ser
+	// admitido por el promotor.
+	@Test
+	public void t12_Ins1ViajeAceptVal() throws Exception {
+		
+		String provinciaDeSalida="Cuenca";
+		String provinciaDeLlegada="Gerona";
+		int diaViaje=27;
+		//Se crea el viaje al cual se le va a solicitar
+		 login("user3","user3");
+		 crearViaje(provinciaDeSalida,provinciaDeLlegada, diaViaje);
+		 cerrarSession();
+		 
+		 login("user1", "user1");
+		
+		 driver.findElement(By.id("form-cuerpo:verTodos")).click();
+		 driver.findElement(By.xpath
+				 (".//*[@id='form-cuerpo:formTodos:tablaViajes_data']/tr[contains(.,\""+provinciaDeSalida+"\") and contains(.,\""+provinciaDeLlegada+"\")]/td[8]/button")).click();
+		 cerrarSession();
+		 login("user3","user3");
+		 driver.findElement(By.xpath("//a[@id='form-cuerpo:verPropios']/span")).click();
+		 driver.findElement(By.xpath("//tbody[@id='form-cuerpo:formularioPropios:tablaMisViajes_data']/tr[contains(.,\""+provinciaDeSalida+"\")"
+					+ "and contains(.,\""+provinciaDeLlegada+"\")  and contains(.,\"Promotor\")]/td[9]/button")).click();
+		 //306 es el id del user1
+		 driver.findElement(By.xpath(".//*[@id='form-cuerpo:formSolicitudes:tablaSolicitudes_data']/tr[contains(.,\"306\")]/td[3]/button")).click();
+		 SeleniumUtils.EsperaCargaPaginaTiempo(driver, 2);
+		 SeleniumUtils.textoPresentePagina(driver, "ACCEPTED");
+		
+	}
+
+	// 13. [Ins2ViajeAceptVal] Inscribir en un viaje dos usuarios y ser
+	// admitidos los dos por el promotor.
+	@Test
+	public void t13_Ins2ViajeAceptVal() throws Exception {
+		
+		String provinciaDeSalida="Cuenca";
+		String provinciaDeLlegada="Gerona";
+		int diaViaje=27;
+		//Se crea el viaje al cual se le va a solicitar
+		 login("user3","user3");
+		 crearViaje(provinciaDeSalida,provinciaDeLlegada, diaViaje);
+		 cerrarSession();
+		 
+		 //Peticion de solicitud 1
+		 login("user1", "user1");
+		
+		 driver.findElement(By.id("form-cuerpo:verTodos")).click();
+		 driver.findElement(By.xpath
+				 (".//*[@id='form-cuerpo:formTodos:tablaViajes_data']/tr[contains(.,\""+provinciaDeSalida+"\") and contains(.,\""+provinciaDeLlegada+"\")]/td[8]/button")).click();
+		 cerrarSession();
+		 
+		 //Peticion de solicitud 2
+		 login("user2", "user2");
+			
+		 driver.findElement(By.id("form-cuerpo:verTodos")).click();
+		 driver.findElement(By.xpath
+				 (".//*[@id='form-cuerpo:formTodos:tablaViajes_data']/tr[contains(.,\""+provinciaDeSalida+"\") and contains(.,\""+provinciaDeLlegada+"\")]/td[8]/button")).click();
+		 cerrarSession();
+		 
+		 //Se aceptan las peticiones
+		 login("user3","user3");
+		 driver.findElement(By.xpath("//a[@id='form-cuerpo:verPropios']/span")).click();
+		 driver.findElement(By.xpath("//tbody[@id='form-cuerpo:formularioPropios:tablaMisViajes_data']/tr[contains(.,\""+provinciaDeSalida+"\")"
+					+ "and contains(.,\""+provinciaDeLlegada+"\")  and contains(.,\"Promotor\")]/td[9]/button")).click();
+		 //306 es el id del user1
+		 driver.findElement(By.xpath(".//*[@id='form-cuerpo:formSolicitudes:tablaSolicitudes_data']/tr[contains(.,\"306\")]/td[3]/button")).click();
+		 SeleniumUtils.EsperaCargaPaginaTiempo(driver, 2);
+		 SeleniumUtils.textoPresentePagina(driver, "ACCEPTED");
+		 
+		 //307 id user2
+		 driver.findElement(By.xpath(".//*[@id='form-cuerpo:formSolicitudes:tablaSolicitudes_data']/tr[contains(.,\"307\")]/td[3]/button")).click();
+		 SeleniumUtils.EsperaCargaPaginaTiempo(driver, 2);
+		 SeleniumUtils.textoPresentePagina(driver, "ACCEPTED");
+
+
+	}
 //
 //	// 14. [Ins3ViajeAceptInval] Inscribir en un viaje (2 plazas máximo)
 //	// dos usuarios y ser admitidos los dos y que un tercero intente inscribirse
@@ -747,7 +753,7 @@ public class SDI2_Tests {
 	    driver.findElement(By.id("form-cuerpo:crearviaje:paxM")).sendKeys("4");
 	    driver.findElement(By.id("form-cuerpo:crearviaje:paxA")).clear();
 	    driver.findElement(By.id("form-cuerpo:crearviaje:paxA")).sendKeys("4");
-	    driver.findElement(By.id("form-cuerpo:crearviaje:j_idt80")).click();
+	    driver.findElement(By.id("form-cuerpo:crearviaje:btnCrearViaje")).click();
 	  }
 	 
 	private void login(String user,String password) {
@@ -769,8 +775,14 @@ public class SDI2_Tests {
 	}
 	
 	private void cerrarSession(){
-	    driver.findElement(By.xpath("//a[@id='form-cabecera:linkCerrarSesion']/span")).click();
-	    SeleniumUtils.textoPresentePagina(driver,"Formulario de login");
+		SeleniumUtils.EsperaCargaPaginaTiempo(driver, 2);
+		SeleniumUtils.ClickSubopcionMenuHover(driver, "form-cabecera:misubmenu1",
+				"form-cabecera:linkCerrarSesion");
+		//driver.findElement(By.xpath("//a[@id='form-cabecera:linkCerrarSesion']/span")).click();
+	    SeleniumUtils.EsperaCargaPaginaTiempo(driver, 2);
+		assertEquals("Formulario de login", driver.findElement(By.cssSelector("th.title")).getText());
+		
+	   
 	}
 
 }
